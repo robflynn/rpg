@@ -3,7 +3,7 @@ import World from "@patd/world"
 import Display from "@patd/display"
 import Controller from '@patd/controller'
 import Player from "@patd/player"
-import { throttle } from "throttle-debounce"
+import { throttle, debounce } from "throttle-debounce"
 
 export default class Game {
   protected display: Display
@@ -19,6 +19,7 @@ export default class Game {
   get player(): Player { return this.world.player }
 
   private throttledMovePlayerTo: Function
+  private debouncedResize: Function
 
   constructor(selector: string) {
     // Setup the containing element
@@ -33,12 +34,13 @@ export default class Game {
     this.controller = new Controller()
 
     this.throttledMovePlayerTo = throttle(this.player.speed, false, (player, position) => player.position = position)
+    this.debouncedResize = debounce(500, false, this.resize.bind(this))
 
     // Prepare for rendering
     this.resize()
 
     // Re-render on resize
-    window.addEventListener('resize', this.resize.bind(this), { passive: true })
+    window.addEventListener('resize', this.debouncedResize.bind(this), { passive: true })
 
     // Render
     this.requestFrame()
