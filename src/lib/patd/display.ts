@@ -20,6 +20,15 @@ export class Display extends GameObject {
   }
 
   render() {
+    this.drawMap()
+    this.drawPlayer()
+  }
+
+  private drawPlayer()  {
+    this.renderTile(this.game.world.player.x, this.game.world.player.y, 99)
+  }
+
+  private drawMap() {
     for (var y = 0; y < this.game.world.map.length; y++) {
       let row = this.game.world.map[y]
 
@@ -52,6 +61,9 @@ export class Display extends GameObject {
       }
       case 2: {
         return 'orange'
+      }
+      case 99: {
+        return 'pink'
       }
       default: {
         return 'gray'

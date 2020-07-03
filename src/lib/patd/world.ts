@@ -1,4 +1,5 @@
 import GameObject from "@patd/object"
+import Player from "@patd/player"
 
 interface WorldArguments {
   tileWidth?: number
@@ -13,6 +14,7 @@ export default class World extends GameObject {
   readonly tileHeight: number
 
   readonly map: any
+  readonly player: Player
 
   constructor({ tileWidth, tileHeight }: WorldArguments = {}) {
     super()
@@ -28,5 +30,11 @@ export default class World extends GameObject {
       [0, 1, 1, 0, 0, 1],
       [0, 1, 1, 0, 0, 1],
     ]
+
+    this.player = new Player()
+  }
+
+  update() {
+    this.player.update()
   }
 }
