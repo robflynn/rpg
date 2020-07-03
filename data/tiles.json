@@ -1,0 +1,38 @@
+[
+  {
+    "id": 0,
+    "name": "grass",
+    "color": "green",
+    "passable": true
+  },
+  {
+    "id": 1,
+    "name": "water",
+    "color": "blue",
+    "passable": false
+  },
+  {
+    "id": 2,
+    "name": "wood",
+    "color": "#835c3b",
+    "passable": true
+  },
+  {
+    "id": 5,
+    "name": "stone",
+    "color": "gray",
+    "passable": false
+  },
+  {
+    "id": 6,
+    "name": "shadow",
+    "color": "black",
+    "passable": true
+  },
+  {
+    "id": 99,
+    "name": "player",
+    "color": "pink",
+    "passable": false
+  }
+]

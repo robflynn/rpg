@@ -2,6 +2,9 @@ import GameObject from "@patd/object"
 import Player from "@patd/player"
 import Character from "@patd/character"
 
+const Map = require("@data/map.json")
+const Tiles = require("@data/tiles.json")
+
 export interface WorldArguments {
   tileWidth?: number
   tileHeight?: number
@@ -20,10 +23,10 @@ export class World extends GameObject {
   readonly tileWidth: number
   readonly tileHeight: number
 
-  readonly map: any
+  readonly map: any = Map
   readonly player: Player
 
-  private tiles: Tile[] = []
+  private tiles: Tile[] = Tiles
 
   get maxTileX(): number {
     if (!this.map || !this.map.length) {
@@ -46,43 +49,6 @@ export class World extends GameObject {
 
     this.tileWidth = tileWidth || World.defaultTileWidth
     this.tileHeight = tileHeight || World.defaultTileHeight
-
-    this.map = [
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1],
-      [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 0, 0, 0, 0, 0],
-      [0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 0, 0, 0, 0, 0],
-      [0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 0, 0, 0, 0, 0],
-      [0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 5, 5, 5, 6, 6, 5, 5, 5, 5, 5, 5, 0, 0, 0, 0, 0],
-      [0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 5, 5, 5, 6, 6, 5, 5, 5, 5, 5, 5, 0, 0, 0, 0, 0],
-      [0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 5, 5, 5, 6, 6, 5, 5, 5, 5, 5, 5, 0, 0, 0, 0, 0],
-      [0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    ]
-
-    this.tiles.push({ id: 0, color: "green", passable: true }) // grass
-    this.tiles.push({ id: 1, color: "blue", passable: false }) // water
-    this.tiles.push({ id: 2, color: "#835C3B", passable: true }) // bridge
-    this.tiles.push({ id: 5, color: "gray", passable: false }) // castle
-    this.tiles.push({ id: 6, color: "black", passable: true }) // door
-    this.tiles.push({ id: 99, color: "pink", passable: false }) // player
-
 
     this.player = new Player()
   }

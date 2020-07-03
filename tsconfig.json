@@ -15,6 +15,9 @@
     "allowJs": true,
     "baseUrl": "./",
     "paths": {
+      "@data/*": [
+        "data/*"
+      ],
       "@lib/*": [
         "src/lib/*"
       ],

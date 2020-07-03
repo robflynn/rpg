@@ -7,9 +7,9 @@ module.exports = {
   resolve: {
     extensions: ['.ts', '.tsx', '.js'],
     alias: {
-      '@patd': resolve('./src/lib/patd')
+      '@patd': resolve('./src/lib/patd'),
+      '@data': resolve('./data')
     }
-
   },
   output: {
     path: path.join(__dirname, '/dist'),
@@ -20,7 +20,7 @@ module.exports = {
       {
         test: /\.tsx?$/,
         loader: 'ts-loader'
-      }
+      },
     ]
   },
   plugins: [
