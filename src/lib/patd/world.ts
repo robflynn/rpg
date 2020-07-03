@@ -16,6 +16,22 @@ export default class World extends GameObject {
   readonly map: any
   readonly player: Player
 
+  get maxTileX(): number {
+    if (!this.map || !this.map.length) {
+      return 0
+    }
+
+    return this.map[0].length - 1
+  }
+
+  get maxTileY(): number {
+    if (!this.map || !this.map.length) {
+      return 0
+    }
+
+    return this.map.length - 1
+  }
+
   constructor({ tileWidth, tileHeight }: WorldArguments = {}) {
     super()
 

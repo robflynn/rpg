@@ -51,24 +51,29 @@ export default class Game extends GameObject {
     this.world.update()
 
     if (this.controller.right) {
-      // set position to 2 if right
-      this.player.x = 1
+      if (this.player.x < this.world.maxTileX) {
+        this.player.x++
+      }
     }
 
     if (this.controller.left) {
-      // set position to 2 if right
-      this.player.x = 0
-    }
-
-    if (this.controller.up) {
-      // set position to 2 if right
-      this.player.y = 0
+      if (this.player.x > 0) {
+        this.player.x--
+      }
     }
 
     if (this.controller.down) {
-      // set position to 2 if right
-      this.player.y = 1
+      if (this.player.y < this.world.maxTileY) {
+        this.player.y++
+      }
     }
+
+    if (this.controller.up) {
+      if (this.player.y > 0) {
+        this.player.y--
+      }
+    }
+
 
     // Draw the gamw
     this.display.render()
