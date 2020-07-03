@@ -3,8 +3,9 @@ import World from "@patd/world"
 import Display from "@patd/display"
 import Controller from '@patd/controller'
 import Player from "@patd/player"
+import { throttle } from "throttle-debounce"
 
-export default class Game extends GameObject {
+export default class Game {
   protected display: Display
   protected controller: Controller
 
@@ -13,11 +14,13 @@ export default class Game extends GameObject {
   readonly element: Element
   readonly selector: string
 
+  private _lastUpdate: any
+
   get player(): Player { return this.world.player }
 
-  constructor(selector: string) {
-    super()
+  private throttledMovePlayerTo: Function
 
+  constructor(selector: string) {
     // Setup the containing element
     this.element = document.querySelector(selector)
     this.selector = selector
@@ -28,6 +31,8 @@ export default class Game extends GameObject {
     this.world = new World()
     this.display = new Display(this)
     this.controller = new Controller()
+
+    this.throttledMovePlayerTo = throttle(this.player.speed, false, (player, position) => player.position = position)
 
     // Prepare for rendering
     this.resize()
@@ -47,37 +52,41 @@ export default class Game extends GameObject {
     this.display.resize()
 	}
 
-	update() {
+	update(time) {
     this.world.update()
 
+    let newPosition = { x: this.player.position.x, y: this.player.position.y }
+
     if (this.controller.right) {
-      if (this.player.x < this.world.maxTileX) {
-        this.player.x++
+      if (newPosition.x < this.world.maxTileX) {
+        newPosition.x++
       }
     }
 
     if (this.controller.left) {
-      if (this.player.x > 0) {
-        this.player.x--
+      if (newPosition.x > 0) {
+        newPosition.x--
       }
     }
 
     if (this.controller.down) {
-      if (this.player.y < this.world.maxTileY) {
-        this.player.y++
+      if (newPosition.y < this.world.maxTileY) {
+        newPosition.y++
       }
     }
 
     if (this.controller.up) {
-      if (this.player.y > 0) {
-        this.player.y--
+      if (newPosition.y > 0) {
+        newPosition.y--
       }
     }
 
+    this.throttledMovePlayerTo(this.player, newPosition)
 
     // Draw the gamw
     this.display.render()
 
+    this._lastUpdate = performance.now()
 		this.requestFrame()
 	}
 }

@@ -1,25 +1,20 @@
-import GameObject from '@patd/object'
+import Character from '@patd/character'
+import Vec2d from '@patd/vec2d'
 
 export interface PlayerArguments {
-  x?: number
-  y?: number
+  position: Vec2d
 }
 
-export class Player extends GameObject {
-  private _x: number
-  private _y: number
+export class Player extends Character {
+  private _position: Vec2d
 
-  get x(): number { return this._x }
-  set x(value: number) { this._x = value }
+  get position(): Vec2d { return this._position }
+  set position(value: Vec2d) { this._position = value }
 
-  get y(): number { return this._y }
-  set y(value: number) { this._y = value }
-
-  constructor({ x, y }: PlayerArguments = {}) {
+  constructor({ position }: PlayerArguments = {} as PlayerArguments) {
     super()
 
-    this._x = x || 0
-    this._y = y || 0
+    this._position = position || { x: 0, y: 0 }
   }
 }
 

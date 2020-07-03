@@ -25,7 +25,7 @@ export class Display extends GameObject {
   }
 
   private drawPlayer()  {
-    this.renderTile(this.game.world.player.x, this.game.world.player.y, 99)
+    this.renderTile(this.game.player.position.x, this.game.player.position.y, 99)
   }
 
   private drawMap() {
