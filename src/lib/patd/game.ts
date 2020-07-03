@@ -57,25 +57,21 @@ export default class Game {
 
     let newPosition = { x: this.player.position.x, y: this.player.position.y }
 
-    if (this.controller.right) {
-      if (newPosition.x < this.world.maxTileX) {
-        newPosition.x++
-      }
+    if (this.controller.right && this.world.canMoveRight(this.player)) {
+      newPosition.x++
     }
 
-    if (this.controller.left) {
-      if (newPosition.x > 0) {
-        newPosition.x--
-      }
+    if (this.controller.left && this.world.canMoveLeft(this.player)) {
+      newPosition.x--
     }
 
-    if (this.controller.down) {
+    if (this.controller.down && this.world.canMoveDown(this.player)) {
       if (newPosition.y < this.world.maxTileY) {
         newPosition.y++
       }
     }
 
-    if (this.controller.up) {
+    if (this.controller.up && this.world.canMoveUp(this.player)) {
       if (newPosition.y > 0) {
         newPosition.y--
       }

@@ -1,5 +1,6 @@
 import GameObject from '@patd/object'
-import Game from "./game"
+import Game from "@patd/game"
+import { Tile } from "@patd/world"
 
 export class Display extends GameObject {
   private canvas: HTMLCanvasElement
@@ -40,34 +41,18 @@ export class Display extends GameObject {
     }
   }
 
-  renderTile(x: number, y: number, tile: number) {
+  renderTile(x: number, y: number, tileNumber: number) {
     let tileWidth = this.game.world.tileWidth
     let tileHeight = this.game.world.tileHeight
 
     let sx = x * tileWidth
     let sy = y * tileHeight
 
-    this.context.fillStyle = this.getColorFromTile(tile)
-    this.context.fillRect(sx, sy, tileWidth, tileHeight)
-  }
+    let tile = this.game.world.getTile(tileNumber)
 
-  private getColorFromTile(tile: number): string {
-    switch(tile) {
-      case 0: {
-        return 'green'
-      }
-      case 1: {
-        return 'blue'
-      }
-      case 2: {
-        return 'orange'
-      }
-      case 99: {
-        return 'pink'
-      }
-      default: {
-        return 'gray'
-      }
+    if (tile) {
+      this.context.fillStyle = tile.color
+      this.context.fillRect(sx, sy, tileWidth, tileHeight)
     }
   }
 
