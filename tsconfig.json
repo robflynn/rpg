@@ -16,10 +16,10 @@
     "baseUrl": "./",
     "paths": {
       "@lib/*": [
-        "lib/*"
+        "src/lib/*"
       ],
       "@patd/*": [
-        "lib/patd/*"
+        "src/lib/patd/*"
       ]
     }
   }

@@ -1,2 +1,4 @@
-console.log("main.ts")
-console.log("or something else?")
+import Game from "@patd/game"
+
+let game = new Game("#root")
+game.run()

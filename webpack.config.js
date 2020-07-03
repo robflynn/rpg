@@ -1,10 +1,15 @@
 const path = require('path')
+const { resolve } = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
   entry: './src/main.ts',
   resolve: {
-    extensions: ['.ts', '.tsx', '.js']
+    extensions: ['.ts', '.tsx', '.js'],
+    alias: {
+      '@patd': resolve('./src/lib/patd')
+    }
+
   },
   output: {
     path: path.join(__dirname, '/dist'),
