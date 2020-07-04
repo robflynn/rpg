@@ -16,7 +16,7 @@ export class Character extends GameObject {
   constructor({ position }: CharacterArguments = {} as CharacterArguments) {
     super()
 
-    this._position = position || { x: 0, y: 0 }
+    this._position = position || new Vec2d({ x: 0, y: 0 })
   }
 }
 

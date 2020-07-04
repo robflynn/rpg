@@ -1,4 +1,3 @@
-import GameObject from '@patd/object'
 import World from "@patd/world"
 import Display from "@patd/display"
 import Controller from '@patd/controller'
@@ -12,15 +11,7 @@ const GameMap = require("@data/map.json") as Map
 const Tiles = require("@data/tiles.json") as Tile[]
 
 import TileSetData from "@data/tilesets.js"
-
-//#region Helper Abstractions
-const forEach = (array, callback) => {
-  for (var n = 0; n < array.length; n++) {
-    let item = array[n]
-
-    callback(item)
-  }
-}
+import Vec2d from './vec2d'
 
 export default class Game {
   protected controller: Controller
@@ -34,7 +25,7 @@ export default class Game {
 
   get player(): Player { return this.world.player }
 
-  private throttledMovePlayerTo: Function
+  private throttledMovePlayer: Function
   private debouncedResize: Function
 
   private display: Display
@@ -52,7 +43,7 @@ export default class Game {
     this.processTileSets(Tiles, TileSetData)
 
     // Instantiate dependencies
-    this.world = new World({ map: GameMap, tiles: Tiles, scale: 2 })
+    this.world = new World({ map: GameMap, tiles: Tiles, scale: 5 })
     this.display = new Display()
 
     document.querySelector('#root').appendChild(this.display.canvas)
@@ -62,7 +53,7 @@ export default class Game {
 
     this.controller = new Controller()
 
-    this.throttledMovePlayerTo = throttle(this.player.speed, false, (player, position) => player.position = position)
+    this.throttledMovePlayer = throttle(this.player.speed, false, (player, direction) => this.movePlayer(player))
     this.debouncedResize = debounce(500, false, this.resize.bind(this))
 
     // Prepare for rendering
@@ -73,6 +64,24 @@ export default class Game {
 
     // Render
     this.requestFrame()
+  }
+
+  private movePlayer(player: Player) {
+    if (this.controller.right) {
+      return this.world.move(player, new Vec2d({ x: 1, y: 0 }))
+    }
+
+    if (this.controller.left) {
+      return this.world.move(player, new Vec2d({ x: -1, y: 0 }))
+    }
+
+    if (this.controller.up) {
+      return this.world.move(player, new Vec2d({ x: 0, y: -1 }))
+    }
+
+    if (this.controller.down) {
+      return this.world.move(player, new Vec2d({ x: 0, y: 1 }))
+    }
   }
 
   private processTileSets(tiles, tilesets) {
@@ -141,33 +150,11 @@ export default class Game {
   update(time) {
     this.world.update()
 
-    let newPosition = { x: this.player.position.x, y: this.player.position.y }
-
-    if (this.controller.right && this.world.canMoveRight(this.player)) {
-      newPosition.x++
-    }
-
-    if (this.controller.left && this.world.canMoveLeft(this.player)) {
-      newPosition.x--
-    }
-
-    if (this.controller.down && this.world.canMoveDown(this.player)) {
-      if (newPosition.y < this.world.maxTileY) {
-        newPosition.y++
-      }
-    }
-
-    if (this.controller.up && this.world.canMoveUp(this.player)) {
-      if (newPosition.y > 0) {
-        newPosition.y--
-      }
-    }
-
-    this.throttledMovePlayerTo(this.player, newPosition)
+    this.throttledMovePlayer(this.player)
 
     this.display.redraw()
 
     this._lastUpdate = performance.now()
     this.requestFrame()
-  }
+   }
 }

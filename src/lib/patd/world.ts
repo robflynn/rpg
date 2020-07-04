@@ -3,6 +3,7 @@ import Player from "@patd/player"
 import Character from "@patd/character"
 import Tile from "@patd/tile"
 import Map from "@patd/map"
+import Vec2d from '@patd/vec2d'
 
 export interface WorldArguments {
   tileWidth?: number
@@ -21,10 +22,25 @@ export class World extends GameObject {
   readonly tileHeight: number
   readonly scale: number
 
+  get scaledTileWidth(): number {
+    return this.tileWidth * this.scale
+  }
+
+  get scaledTileHeight(): number {
+    return this.tileHeight * this.scale
+  }
+
   readonly map: Map
   readonly player: Player
 
   readonly tiles: Tile[]
+
+  get center(): Vec2d {
+    let centerX = Math.floor(this.maxTileX / 2)
+    let centerY = Math.floor(this.maxTileY / 2)
+
+    return new Vec2d({ x: centerX, y: centerY })
+  }
 
   get maxTileX(): number {
     if (!this.map || !this.map.length) {
@@ -65,64 +81,32 @@ export class World extends GameObject {
     return null
   }
 
-  canMoveRight(character: Character): boolean {
-    let cPos = character.position
-
-    if (cPos.x == this.maxTileX) { return false }
-
-    let tileID = this.map[cPos.y][cPos.x + 1]
-    let tile = this.getTile(tileID)
-
-    if (tile) {
-      // Cannot pass the impassable!
-      if (!tile.passable) { return false }
+  move(character: Character, direction: Vec2d) {
+    if (this.canMove(character, direction)) {
+      character.position.add(direction)
     }
-
-    return true
   }
 
-  canMoveLeft(character: Character): boolean {
-    let cPos = character.position
+  canMove(character: Character, direction: Vec2d): boolean {
+    let x = character.position.x
+    let y = character.position.y
 
-    if (cPos.x == 0) { return false }
+    x += direction.x
+    y += direction.y
 
-    let tileID = this.map[cPos.y][cPos.x - 1]
-    let tile = this.getTile(tileID)
-
-    if (tile) {
-      // Cannot pass the impassable!
-      if (!tile.passable) { return false }
+    // out of bounds
+    if (x < 0 || x > this.maxTileX) {
+      return false
     }
 
-    return true
-  }
-
-  canMoveUp(character: Character): boolean {
-    let cPos = character.position
-
-    if (cPos.y == 0) { return false }
-
-    let tileID = this.map[cPos.y - 1][cPos.x]
-    let tile = this.getTile(tileID)
-
-    if (tile) {
-      // Cannot pass the impassable!
-      if (!tile.passable) { return false }
+    if (y < 0 || y > this.maxTileY) {
+      return false
     }
 
-    return true
-  }
-
-  canMoveDown(character: Character): boolean {
-    let cPos = character.position
-
-    if (cPos.y == this.maxTileY) { return false }
-
-    let tileID = this.map[cPos.y + 1][cPos.x]
-    let tile = this.getTile(tileID)
+    let tile_idx = this.map[y][x]
+    let tile = this.getTile(tile_idx)
 
     if (tile) {
-      // Cannot pass the impassable!
       if (!tile.passable) { return false }
     }
 
