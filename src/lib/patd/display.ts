@@ -2,10 +2,13 @@ import GameObject from '@patd/object'
 import Game from "@patd/game"
 import Tile from "@patd/tile"
 
+const resizeImageData = require('resize-image-data')
+
 export class Display extends GameObject {
   private canvas: HTMLCanvasElement
   private context: CanvasRenderingContext2D
   private game: Game
+  private scaledImageCache: any = {}
 
   constructor(game: Game) {
     super()
@@ -44,19 +47,26 @@ export class Display extends GameObject {
   drawTile(x: number, y: number, tileNumber: number) {
     let tileWidth = this.game.world.tileWidth
     let tileHeight = this.game.world.tileHeight
+    let scale = this.game.world.scale
 
-    let sx = x * tileWidth
-    let sy = y * tileHeight
+    let sx = x * tileWidth  * scale
+    let sy = y * tileHeight * scale
 
     let tile = this.game.world.getTile(tileNumber)
 
     if (tile) {
       if (tile.image) {
-        this.context.putImageData(tile.image, sx, sy)
+        if (!this.scaledImageCache[tile.id]) {
+          this.scaledImageCache[tile.id] =
+            resizeImageData(tile.image, tile.image.width * scale, tile.image.height * scale)
+        }
+
+        let scaledImage = this.scaledImageCache[tile.id]
+        this.context.putImageData(scaledImage, sx, sy)
       } else {
         // Old tyle fallback
         this.context.fillStyle = tile.color
-        this.context.fillRect(sx, sy, tileWidth, tileHeight)
+        this.context.fillRect(sx, sy, tileWidth * scale, tileHeight * scale)
       }
     }
   }

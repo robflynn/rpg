@@ -40,7 +40,7 @@ export default class Game {
     this.processTileSets(Tiles, TileSetData)
 
     // Instantiate dependencies
-    this.world = new World({ map: GameMap, tiles: Tiles })
+    this.world = new World({ map: GameMap, tiles: Tiles, scale: 2 })
     this.display = new Display(this)
     this.controller = new Controller()
 
