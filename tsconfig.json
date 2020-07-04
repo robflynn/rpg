@@ -23,7 +23,19 @@
       ],
       "@patd/*": [
         "src/lib/patd/*"
+      ],
+      "@editor/*": [
+        "src/lib/patd/editor/*"
       ]
     }
-  }
+  },
+
+  "files": [
+    "src/shims-vue.d.ts"
+  ],
+
+  "exclude": [
+    "node_modules"
+  ]
+
 }
