@@ -1,6 +1,6 @@
 import GameObject from '@patd/object'
 import Game from "@patd/game"
-import { Tile } from "@patd/world"
+import Tile from "@patd/tile"
 
 export class Display extends GameObject {
   private canvas: HTMLCanvasElement
@@ -26,7 +26,7 @@ export class Display extends GameObject {
   }
 
   private drawPlayer()  {
-    this.renderTile(this.game.player.position.x, this.game.player.position.y, 99)
+    this.drawTile(this.game.player.position.x, this.game.player.position.y, 99)
   }
 
   private drawMap() {
@@ -36,12 +36,12 @@ export class Display extends GameObject {
       for (var x = 0; x < row.length; x++) {
         let cell = row[x]
 
-        this.renderTile(x, y, cell)
+        this.drawTile(x, y, cell)
       }
     }
   }
 
-  renderTile(x: number, y: number, tileNumber: number) {
+  drawTile(x: number, y: number, tileNumber: number) {
     let tileWidth = this.game.world.tileWidth
     let tileHeight = this.game.world.tileHeight
 
@@ -51,8 +51,13 @@ export class Display extends GameObject {
     let tile = this.game.world.getTile(tileNumber)
 
     if (tile) {
-      this.context.fillStyle = tile.color
-      this.context.fillRect(sx, sy, tileWidth, tileHeight)
+      if (tile.image) {
+        this.context.putImageData(tile.image, sx, sy)
+      } else {
+        // Old tyle fallback
+        this.context.fillStyle = tile.color
+        this.context.fillRect(sx, sy, tileWidth, tileHeight)
+      }
     }
   }
 

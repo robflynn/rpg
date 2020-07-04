@@ -21,6 +21,10 @@ module.exports = {
         test: /\.tsx?$/,
         loader: 'ts-loader'
       },
+      {
+        test: /\.png?$/,
+        loader: 'url-loader'
+      },
     ]
   },
   plugins: [

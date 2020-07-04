@@ -1,32 +1,30 @@
 import GameObject from "@patd/object"
 import Player from "@patd/player"
 import Character from "@patd/character"
-
-const Map = require("@data/map.json")
-const Tiles = require("@data/tiles.json")
+import Tile from "@patd/tile"
+import { Map } from "@patd/types"
 
 export interface WorldArguments {
   tileWidth?: number
   tileHeight?: number
-}
-
-export interface Tile {
-  id: number,
-  color: string,
-  passable: boolean
+  scale?: number,
+  map: Map,
+  tiles: Tile[]
 }
 
 export class World extends GameObject {
-  static readonly defaultTileWidth: number = 32
-  static readonly defaultTileHeight: number = 32
+  static readonly defaultTileWidth: number = 16
+  static readonly defaultTileHeight: number = 16
+  static readonly defaultScale: number = 1
 
   readonly tileWidth: number
   readonly tileHeight: number
+  readonly scale: number
 
-  readonly map: any = Map
+  readonly map: Map
   readonly player: Player
 
-  private tiles: Tile[] = Tiles
+  readonly tiles: Tile[]
 
   get maxTileX(): number {
     if (!this.map || !this.map.length) {
@@ -44,11 +42,15 @@ export class World extends GameObject {
     return this.map.length - 1
   }
 
-  constructor({ tileWidth, tileHeight }: WorldArguments = {}) {
+  constructor({ tileWidth, tileHeight, scale, map, tiles }: WorldArguments) {
     super()
 
     this.tileWidth = tileWidth || World.defaultTileWidth
     this.tileHeight = tileHeight || World.defaultTileHeight
+    this.scale = scale || World.defaultScale
+
+    this.map = map
+    this.tiles = tiles
 
     this.player = new Player()
   }

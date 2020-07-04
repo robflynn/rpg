@@ -11,8 +11,6 @@ export default class GameObject {
 
   constructor({ id }: GameObjectArguments = {}) {
     this.id = id || uuidv4()
-
-    console.log(`Game object online: [${this.id}]`)
   }
 
   update() {}

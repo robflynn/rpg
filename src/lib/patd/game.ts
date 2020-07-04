@@ -4,6 +4,14 @@ import Display from "@patd/display"
 import Controller from '@patd/controller'
 import Player from "@patd/player"
 import { throttle, debounce } from "throttle-debounce"
+import { Map } from "@patd/types"
+import Tile from "@patd/tile"
+import TileSet from "@patd/tileset"
+
+const GameMap = require("@data/map.json") as Map
+const Tiles = require("@data/tiles.json") as Tile[]
+
+import TileSetData from "@data/tilesets.js"
 
 export default class Game {
   protected display: Display
@@ -28,8 +36,13 @@ export default class Game {
     if (!this.element) { throw `Could not find game container: ${selector}.` }
     this.element.innerHTML = ''
 
+    // Pre-process the tiles before handing them over to the game world.
+    // We need to do some tile -> texture associations and image pre-loading
+    // This can be moved to a loader class later.
+    this.processTileSets(Tiles, TileSetData)
+
     // Instantiate dependencies
-    this.world = new World()
+    this.world = new World({ map: GameMap, tiles: Tiles })
     this.display = new Display(this)
     this.controller = new Controller()
 
@@ -44,6 +57,41 @@ export default class Game {
 
     // Render
     this.requestFrame()
+  }
+
+  private processTileSets(tiles, tilesets) {
+    Object.keys(tilesets).forEach(tilesetName => {
+      let tileset = tilesets[tilesetName]
+      let image = new Image()
+      image.src = tileset.image
+
+      let canvas = document.createElement("canvas")
+      let context = canvas.getContext("2d")
+      context.drawImage(image, 0, 0)
+
+      tileset.textures.forEach(texture => {
+        let textureImage = context.getImageData(texture.x, texture.y, 16, 16)
+
+        texture.image = textureImage
+      })
+
+      document.querySelector('body').appendChild(canvas)
+    })
+
+    tiles.forEach(tile => {
+      if (tile["tileData"]) {
+        let tileData = tile.tileData
+        let tileset = tilesets[tileData.tileset]
+        let texture = tileData.texture
+
+        let matchedTexture = tileset.textures.filter(tilesetTexture => tilesetTexture.name == texture)
+        if (matchedTexture && matchedTexture.length) {
+          matchedTexture = matchedTexture[0]
+
+          tile.image = matchedTexture.image
+        }
+      }
+    })
   }
 
 	private requestFrame() {

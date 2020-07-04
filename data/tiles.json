@@ -3,7 +3,11 @@
     "id": 0,
     "name": "grass",
     "color": "green",
-    "passable": true
+    "passable": true,
+    "tileData": {
+      "tileset": "town",
+      "texture": "grass"
+    }
   },
   {
     "id": 1,

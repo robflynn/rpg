@@ -33,8 +33,6 @@ export class Controller {
       case Key.Down:
       case Key.S: this.down = keyState; break;
     }
-
-    console.log(this)
   }
 }
 
