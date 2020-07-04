@@ -2,7 +2,7 @@ const path = require('path')
 const { resolve } = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { VueLoaderPlugin } = require('vue-loader')
-
+var MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
 let baseConfig = {
   module: {},
@@ -73,8 +73,20 @@ let editorBundle = Object.assign({}, baseConfig, {
         loader: 'url-loader'
       },
       {
-        test: /\.css$/,
-        use: ['style-loader', 'css-loader']
+        test: /(\.css$|\.scss$)/,
+        use: [
+          'vue-style-loader',
+          'style-loader',
+          'css-loader',
+          'sass-loader',
+          {
+            loader: 'sass-resources-loader',
+            options: {
+              resources: [
+                './src/lib/patd/editor/styles/global.scss'
+              ]
+            }
+          }]
       },
       {
         test: /\.vue$/,
@@ -88,7 +100,7 @@ let editorBundle = Object.assign({}, baseConfig, {
       filename: 'editor.html'
     }),
 
-    new VueLoaderPlugin()
+    new VueLoaderPlugin(),
   ]
 })
 

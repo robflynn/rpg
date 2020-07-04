@@ -1,6 +1,6 @@
 <template>
   <div id="editor--app">
-    Foo
+    <div>Foo</div>
   </div>
 </template>
 
@@ -9,8 +9,17 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
   #editor--app {
+    width: 100%;
+    height: 100%;
     background: red;
+
+    display: flex;
+    flex-direction: column;
+
+    div {
+      background: purple;
+    }
   }
 </style>
