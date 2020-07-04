@@ -61,7 +61,8 @@ export default class Game {
     Object.keys(tilesets).forEach(tilesetName => {
       let tileset = tilesets[tilesetName]
       let image = new Image()
-      image.onload = (e) => {
+
+      image.onload = () => {
         let canvas = document.createElement("canvas")
         let context = canvas.getContext("2d")
         context.drawImage(image, 0, 0)
@@ -109,15 +110,15 @@ export default class Game {
     })
   }
 
-	private requestFrame() {
-		window.requestAnimationFrame(this.update.bind(this))
-	}
+  private requestFrame() {
+    window.requestAnimationFrame(this.update.bind(this))
+  }
 
-	protected resize() {
+  protected resize() {
     this.display.resize()
-	}
+  }
 
-	update(time) {
+  update(time) {
     this.world.update()
 
     let newPosition = { x: this.player.position.x, y: this.player.position.y }
@@ -148,6 +149,6 @@ export default class Game {
     this.display.render()
 
     this._lastUpdate = performance.now()
-		this.requestFrame()
-	}
+    this.requestFrame()
+  }
 }
