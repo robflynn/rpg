@@ -2,7 +2,7 @@ import GameObject from "@patd/object"
 import Player from "@patd/player"
 import Character from "@patd/character"
 import Tile from "@patd/tile"
-import { Map } from "@patd/types"
+import Map from "@patd/map"
 
 export interface WorldArguments {
   tileWidth?: number

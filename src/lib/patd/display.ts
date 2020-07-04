@@ -1,80 +1,65 @@
-import GameObject from '@patd/object'
-import Game from "@patd/game"
-import Tile from "@patd/tile"
+export abstract class Layer {
+  readonly canvas: HTMLCanvasElement
+  readonly context: CanvasRenderingContext2D
 
-const resizeImageData = require('resize-image-data')
+  constructor() {
+    this.canvas = document.createElement('canvas')
+    this.context = this.canvas.getContext('2d')
+  }
 
-export class Display extends GameObject {
-  private canvas: HTMLCanvasElement
-  private context: CanvasRenderingContext2D
-  private game: Game
-  private scaledImageCache: any = {}
+  resize(width: number, height: number) {
+    this.canvas.width = width
+    this.canvas.height = height
+  }
 
-  constructor(game: Game) {
-    super()
+  redraw() {
+    this.context.resetTransform()
+    this.context.clearRect(0, 0, this.canvas.width, this.canvas.height)
 
-    let canvas = document.createElement('canvas')
-    let context = canvas.getContext('2d')
+    this.render()
+  }
 
-    this.game = game
-    this.canvas = canvas
-    this.context = context
+  abstract render()
+}
 
-    this.game.element.appendChild(this.canvas)
+export default class Display {
+  // All display layers will get rendered down here
+  readonly canvas: HTMLCanvasElement
+  readonly context: CanvasRenderingContext2D
+
+  get layers(): Layer[] {
+    return this._displayLayers
+  }
+
+  private _displayLayers: Layer[] = []
+
+  constructor() {
+    this.canvas = document.createElement('canvas')
+    this.context = this.canvas.getContext('2d')
+  }
+
+  addLayer(layer: Layer) {
+    this._displayLayers.push(layer)
+  }
+
+  redraw() {
+    this.context.resetTransform()
+    this.context.clearRect(0, 0, this.canvas.width, this.canvas.height)
+
+    this.render()
   }
 
   render() {
-    this.drawMap()
-    this.drawPlayer()
+    this.layers.forEach(layer => {
+      layer.redraw()
+      this.context.drawImage(layer.canvas, 0, 0)
+    })
   }
 
-  private drawPlayer()  {
-    this.drawTile(this.game.player.position.x, this.game.player.position.y, 99)
-  }
+  resize(width: number, height: number) {
+    this.canvas.width = width
+    this.canvas.height = height
 
-  private drawMap() {
-    for (var y = 0; y < this.game.world.map.length; y++) {
-      let row = this.game.world.map[y]
-
-      for (var x = 0; x < row.length; x++) {
-        let cell = row[x]
-
-        this.drawTile(x, y, cell)
-      }
-    }
-  }
-
-  drawTile(x: number, y: number, tileNumber: number) {
-    let tileWidth = this.game.world.tileWidth
-    let tileHeight = this.game.world.tileHeight
-    let scale = this.game.world.scale
-
-    let sx = x * tileWidth  * scale
-    let sy = y * tileHeight * scale
-
-    let tile = this.game.world.getTile(tileNumber)
-
-    if (tile) {
-      if (tile.image) {
-        if (!this.scaledImageCache[tile.id]) {
-          this.scaledImageCache[tile.id] =
-            resizeImageData(tile.image, tile.image.width * scale, tile.image.height * scale)
-        }
-
-        let scaledImage = this.scaledImageCache[tile.id]
-        this.context.putImageData(scaledImage, sx, sy)
-      } else {
-        // Old tyle fallback
-        this.context.fillStyle = tile.color
-        this.context.fillRect(sx, sy, tileWidth * scale, tileHeight * scale)
-      }
-    }
-  }
-
-  resize() {
-    this.canvas.width = window.innerWidth;
-    this.canvas.height = window.innerHeight;
+    this.layers.forEach(layer => layer.resize(width, height))
   }
 }
-
-export default Display

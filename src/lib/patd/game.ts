@@ -4,15 +4,25 @@ import Display from "@patd/display"
 import Controller from '@patd/controller'
 import Player from "@patd/player"
 import { throttle, debounce } from "throttle-debounce"
-import { Map } from "@patd/types"
+import Map from "@patd/map"
 import Tile from "@patd/tile"
+import WorldLayer from "@patd/layers/world_layer"
+
 const GameMap = require("@data/map.json") as Map
 const Tiles = require("@data/tiles.json") as Tile[]
 
 import TileSetData from "@data/tilesets.js"
 
+//#region Helper Abstractions
+const forEach = (array, callback) => {
+  for (var n = 0; n < array.length; n++) {
+    let item = array[n]
+
+    callback(item)
+  }
+}
+
 export default class Game {
-  protected display: Display
   protected controller: Controller
 
   readonly world: World
@@ -26,6 +36,8 @@ export default class Game {
 
   private throttledMovePlayerTo: Function
   private debouncedResize: Function
+
+  private display: Display
 
   constructor(selector: string) {
     // Setup the containing element
@@ -41,7 +53,13 @@ export default class Game {
 
     // Instantiate dependencies
     this.world = new World({ map: GameMap, tiles: Tiles, scale: 2 })
-    this.display = new Display(this)
+    this.display = new Display()
+
+    document.querySelector('#root').appendChild(this.display.canvas)
+
+    let worldLayer = new WorldLayer({ world: this.world })
+    this.display.addLayer(worldLayer)
+
     this.controller = new Controller()
 
     this.throttledMovePlayerTo = throttle(this.player.speed, false, (player, position) => player.position = position)
@@ -79,7 +97,6 @@ export default class Game {
               let blue = data[offset + 2]
 
               // magenta alpha mask
-              console.log(red, green, blue)
               if (red == 255 && green == 0 && blue == 255) {
                 // set alpha 0
                 data[offset + 3] = 0
@@ -115,7 +132,10 @@ export default class Game {
   }
 
   protected resize() {
-    this.display.resize()
+    let width = window.innerWidth
+    let height = window.innerHeight
+
+    this.display.resize(width, height)
   }
 
   update(time) {
@@ -145,8 +165,7 @@ export default class Game {
 
     this.throttledMovePlayerTo(this.player, newPosition)
 
-    // Draw the gamw
-    this.display.render()
+    this.display.redraw()
 
     this._lastUpdate = performance.now()
     this.requestFrame()
