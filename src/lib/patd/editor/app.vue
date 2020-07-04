@@ -1,6 +1,6 @@
 <template>
   <div id="editor--app">
-    <div>Foo</div>
+    adads
   </div>
 </template>
 
@@ -13,13 +13,8 @@ export default {
   #editor--app {
     width: 100%;
     height: 100%;
-    background: red;
 
     display: flex;
     flex-direction: column;
-
-    div {
-      background: purple;
-    }
   }
 </style>

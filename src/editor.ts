@@ -1,7 +1,9 @@
-import Vue from 'vue/dist/vue.esm'
+import Vue from 'vue'
 
-// @ts-ignore
 import App from "@editor/app.vue"
+import SplitPane from 'vue-splitpane'
+
+Vue.component('split-pane', SplitPane)
 
 document.addEventListener('DOMContentLoaded', () => {
   let editorElement = document.querySelector('#editor')

@@ -34,6 +34,7 @@
     "throttle-debounce": "^2.2.1",
     "uuid": "^8.2.0",
     "vue": "^2.6.11",
+    "vue-splitpane": "^1.0.6",
     "webpack-dev-server": "^3.11.0"
   }
 }

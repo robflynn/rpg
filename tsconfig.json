@@ -31,7 +31,12 @@
   },
 
   "files": [
-    "src/shims-vue.d.ts"
+    "./vue-shim.d.ts"
+  ],
+
+  "include": [
+    "**/*.ts",
+    "**/*.vue"
   ],
 
   "exclude": [
