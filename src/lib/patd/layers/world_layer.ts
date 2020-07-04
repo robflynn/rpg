@@ -64,7 +64,7 @@ export class MapWindow {
     let maxCenterX = this.mapWidth - this.halfViewportWidth
 
     let minCenterY = this.halfViewportHeight
-    let maxCenterY = this.mapHeight - this.halfViewportHeight - 1
+    let maxCenterY = this.mapHeight - this.halfViewportHeight
 
     if (cx < minCenterX) { cx = minCenterX }
     else if (cx > maxCenterX) { cx = maxCenterX }
@@ -131,13 +131,7 @@ export default class WorldLayer extends Layer {
 
     super.resize(w, h)
 
-    let layerWidth = this.canvas.width
-    let layerHeight = this.canvas.height
-
-    let tilesX = Math.ceil(layerWidth / this.scaledTileWidth)
-    let tilesY = Math.ceil(layerHeight / this.scaledTileHeight)
-
-    this.mapWindow = new MapWindow(this.world.map, tilesX, tilesY)
+    this.mapWindow = new MapWindow(this.world.map, numTilesX, numTilesY)
   }
 
   get scaledTileWidth(): number {
