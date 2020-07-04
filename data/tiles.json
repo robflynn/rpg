@@ -25,18 +25,34 @@
     "id": 5,
     "name": "stone",
     "color": "gray",
-    "passable": false
+    "passable": false,
+    "tileData": {
+      "tileset": "town",
+      "texture": "castle_stone__seamless"
+    }
   },
   {
     "id": 6,
-    "name": "shadow",
+    "name": "open_door",
     "color": "black",
-    "passable": true
+    "passable": true,
+    "tileData": {
+      "tileset": "town",
+      "texture": "castle_door__open"
+    }
   },
   {
     "id": 99,
     "name": "player",
     "color": "pink",
     "passable": false
+  },
+  {
+    "id": 9,
+    "name": "tree",
+    "tileData": {
+      "tileset": "town",
+      "texture": "tree__primary"
+    }
   }
 ]

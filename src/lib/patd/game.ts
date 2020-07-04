@@ -6,8 +6,6 @@ import Player from "@patd/player"
 import { throttle, debounce } from "throttle-debounce"
 import { Map } from "@patd/types"
 import Tile from "@patd/tile"
-import TileSet from "@patd/tileset"
-
 const GameMap = require("@data/map.json") as Map
 const Tiles = require("@data/tiles.json") as Tile[]
 
@@ -63,34 +61,51 @@ export default class Game {
     Object.keys(tilesets).forEach(tilesetName => {
       let tileset = tilesets[tilesetName]
       let image = new Image()
-      image.src = tileset.image
+      image.onload = (e) => {
+        let canvas = document.createElement("canvas")
+        let context = canvas.getContext("2d")
+        context.drawImage(image, 0, 0)
 
-      let canvas = document.createElement("canvas")
-      let context = canvas.getContext("2d")
-      context.drawImage(image, 0, 0)
+        tileset.textures.forEach(texture => {
+          let textureImage = context.getImageData(texture.x, texture.y, 16, 16)
 
-      tileset.textures.forEach(texture => {
-        let textureImage = context.getImageData(texture.x, texture.y, 16, 16)
+          for (var y = 0; y < textureImage.height; y++) {
+            for (var x = 0; x < textureImage.width; x++) {
+              let data = textureImage.data
+              let offset = (y * 16 * 4) + (x * 4)
+              let red = data[offset]
+              let green = data[offset + 1]
+              let blue = data[offset + 2]
 
-        texture.image = textureImage
-      })
+              // magenta alpha mask
+              console.log(red, green, blue)
+              if (red == 255 && green == 0 && blue == 255) {
+                // set alpha 0
+                data[offset + 3] = 0
+              }
+            }
+          }
 
-      document.querySelector('body').appendChild(canvas)
-    })
+          texture.image = textureImage
+        })
 
-    tiles.forEach(tile => {
-      if (tile["tileData"]) {
-        let tileData = tile.tileData
-        let tileset = tilesets[tileData.tileset]
-        let texture = tileData.texture
+        tiles.forEach(tile => {
+          if (tile["tileData"]) {
+            let tileData = tile.tileData
+            let tileset = tilesets[tileData.tileset]
+            let texture = tileData.texture
 
-        let matchedTexture = tileset.textures.filter(tilesetTexture => tilesetTexture.name == texture)
-        if (matchedTexture && matchedTexture.length) {
-          matchedTexture = matchedTexture[0]
+            let matchedTexture = tileset.textures.filter(tilesetTexture => tilesetTexture.name == texture)
+            if (matchedTexture && matchedTexture.length) {
+              matchedTexture = matchedTexture[0]
 
-          tile.image = matchedTexture.image
-        }
+              tile.image = matchedTexture.image
+            }
+          }
+        })
+
       }
+      image.src = tileset.image
     })
   }
 
