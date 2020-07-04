@@ -25,7 +25,7 @@ export default class Game {
 
   get player(): Player { return this.world.player }
 
-  private throttledMovePlayer: Function
+  private handleThrottledControllerInput: Function
   private debouncedResize: Function
 
   private display: Display
@@ -43,7 +43,7 @@ export default class Game {
     this.processTileSets(Tiles, TileSetData)
 
     // Instantiate dependencies
-    this.world = new World({ map: GameMap, tiles: Tiles, scale: 5 })
+    this.world = new World({ map: GameMap, tiles: Tiles, scale: 4 })
     this.display = new Display()
 
     document.querySelector('#root').appendChild(this.display.canvas)
@@ -53,7 +53,7 @@ export default class Game {
 
     this.controller = new Controller()
 
-    this.throttledMovePlayer = throttle(this.player.speed, false, (player, direction) => this.movePlayer(player))
+    this.handleThrottledControllerInput = throttle(this.player.speed, false, (player, direction) => this.movePlayer(player))
     this.debouncedResize = debounce(500, false, this.resize.bind(this))
 
     // Prepare for rendering
@@ -150,7 +150,7 @@ export default class Game {
   update(time) {
     this.world.update()
 
-    this.throttledMovePlayer(this.player)
+    this.handleThrottledControllerInput(this.player)
 
     this.display.redraw()
 
