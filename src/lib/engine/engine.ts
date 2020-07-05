@@ -9,19 +9,6 @@ export enum EngineState {
 
 export interface EngineOptions {}
 
-class LoadingScene extends Scene {
-  render() {
-    let c = this.context
-
-    c.fillStyle = 'black'
-    c.fillRect(0, 0, this.width, this.height)
-
-    c.font = '20px monospace'
-    c.fillStyle = 'white'
-    c.fillText("Loading...", 50, 50)
-  }
-}
-
 export default class Engine {
   readonly width: number
   readonly height: number
@@ -43,7 +30,8 @@ export default class Engine {
     }
   }
 
-  private scene: Scene
+  protected scene: Scene
+
   private canvas: HTMLCanvasElement
   private context: CanvasRenderingContext2D
   private selector: string
@@ -54,8 +42,6 @@ export default class Engine {
     this.width = width
     this.height = height
     this.selector = selector
-
-    this.scene = new LoadingScene(this, this.width, this.height)
 
     this.createCanvas()
     this.onCreate()
@@ -101,7 +87,9 @@ export default class Engine {
   }
 
   private update(fTime) {
-    this.scene.update(fTime)
+    if (this.scene) {
+      this.scene.update(fTime)
+    }
 
     this.render()
     this.onUpdate(fTime)
@@ -110,7 +98,9 @@ export default class Engine {
   }
 
   private render() {
-    this.context.drawImage(this.scene.buffer, 0, 0)
+    if (this.scene) {
+      this.context.drawImage(this.scene.buffer, 0, 0)
+    }
   }
 
   private createCanvas() {

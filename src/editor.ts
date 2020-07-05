@@ -5,6 +5,21 @@ import AssetLoader from "@engine/asset_loader"
 
 const DungeonMap = require("@data/maps/dungeon.map.json")
 
+import Scene from "@engine/scene"
+
+class LoadingScene extends Scene {
+  render() {
+    let c = this.context
+
+    c.fillStyle = 'black'
+    c.fillRect(0, 0, this.width, this.height)
+
+    c.font = '20px monospace'
+    c.fillStyle = 'white'
+    c.fillText("Loading...", 50, 50)
+  }
+}
+
 class PatdGame extends Engine {
   onCreate() {
     console.log('patd game created.')
@@ -12,6 +27,8 @@ class PatdGame extends Engine {
 
   onStart() {
     console.log('patd game started.')
+
+    this.scene = new LoadingScene(this, this.width, this.height)
   }
 
   onUpdate(time) {
