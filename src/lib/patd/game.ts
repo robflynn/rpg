@@ -6,13 +6,14 @@ import { throttle, debounce } from "throttle-debounce"
 import Map from "@patd/map"
 import Tile from "@patd/tile"
 import WorldLayer from "@patd/layers/world_layer"
+import SpriteSheet from "@patd/sprite_sheet"
 
 const GameMap = require("@data/map.json") as Map
 const Tiles = require("@data/tiles.json") as Tile[]
 
 import TileSetData from "@data/tilesets.js"
 import Vec2d from './vec2d'
-import DebugLayer from './layers/debug_layer';
+import DebugLayer from './layers/debug_layer'
 
 export default class Game {
   protected controller: Controller
@@ -26,6 +27,8 @@ export default class Game {
 
   private _fpsBuffer = []
   private _fps: number = 0
+
+  public sheet: SpriteSheet = new SpriteSheet()
 
   get player(): Player { return this.world.player }
 
@@ -100,10 +103,18 @@ export default class Game {
       let tileset = tilesets[tilesetName]
       let image = new Image()
 
-      image.onload = () => {
+      image.onload = (e) => {
         let canvas = document.createElement("canvas")
         let context = canvas.getContext("2d")
         context.drawImage(image, 0, 0)
+
+        let tilesetImageData = context.getImageData(0, 0, image.width, image.height)
+
+        SpriteSheet.load(tilesetImageData, 16, 16)
+                   .then(sheet => {
+                     this.sheet = sheet
+                   })
+
 
         tileset.textures.forEach(texture => {
           let textureImage = context.getImageData(texture.x, texture.y, 16, 16)
