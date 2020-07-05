@@ -15,6 +15,10 @@ class LoadingScene extends Scene {
 
     c.fillStyle = 'black'
     c.fillRect(0, 0, this.width, this.height)
+
+    c.font = '20px monospace'
+    c.fillStyle = 'white'
+    c.fillText("Loading...", 50, 50)
   }
 }
 
@@ -42,7 +46,7 @@ export default class Engine {
   private scene: Scene
   private canvas: HTMLCanvasElement
   private context: CanvasRenderingContext2D
-  private selector
+  private selector: string
   private element: HTMLElement
   private _state: EngineState = EngineState.notStarted
 
@@ -51,7 +55,7 @@ export default class Engine {
     this.height = height
     this.selector = selector
 
-    this.scene = new LoadingScene(this.width, this.height)
+    this.scene = new LoadingScene(this, this.width, this.height)
 
     this.createCanvas()
     this.onCreate()
