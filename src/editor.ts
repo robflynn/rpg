@@ -15,7 +15,6 @@ class PatdGame extends Engine {
   }
 
   onUpdate(time) {
-    console.log(time)
   }
 
   onStateChange(fromState, toState) {

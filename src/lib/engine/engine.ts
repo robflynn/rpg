@@ -12,9 +12,19 @@ abstract class Renderable {
   protected canvas: HTMLCanvasElement
   protected context: CanvasRenderingContext2D
 
-  constructor() {
+  readonly width: number
+  readonly height: number
+
+  constructor(width: number, height: number) {
     this.canvas = document.createElement('canvas')
     this.context = this.canvas.getContext('2d')
+
+    this.width = width
+    this.height = height
+
+    console.log('choo choo', width, height)
+
+    this.autoSize()
   }
 
   redraw() {
@@ -24,24 +34,17 @@ abstract class Renderable {
     this.render()
   }
 
+  private autoSize() {
+    this.canvas.width = this.width
+    this.canvas.height = this.height
+  }
+
   abstract render()
 }
 
 abstract class Scene extends Renderable {
   get buffer(): HTMLCanvasElement {
     return this.canvas
-  }
-
-  get width(): number {
-    return this.canvas.width
-  }
-
-  get height(): number {
-    return this.canvas.height
-  }
-
-  constructor() {
-    super()
   }
 }
 
@@ -75,7 +78,7 @@ export default class Engine {
     }
   }
 
-  private scene: Scene = new LoadingScene()
+  private scene: Scene
   private canvas: HTMLCanvasElement
   private context: CanvasRenderingContext2D
   private selector
@@ -86,6 +89,8 @@ export default class Engine {
     this.width = width
     this.height = height
     this.selector = selector
+
+    this.scene = new LoadingScene(this.width, this.height)
 
     this.createCanvas()
     this.onCreate()
@@ -131,6 +136,7 @@ export default class Engine {
   }
 
   private update(fTime) {
+    this.redraw()
 
     this.onUpdate(fTime)
 
@@ -138,11 +144,8 @@ export default class Engine {
   }
 
   private render() {
-//    this.scene.redraw()
-    //this.context.drawImage(this.scene.buffer, 0, 0)
-
-    console.log("yo")
-    //console.log(this.scene.buffer.width)
+    this.scene.redraw()
+    this.context.drawImage(this.scene.buffer, 0, 0)
   }
 
   private createCanvas() {
