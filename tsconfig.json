@@ -10,6 +10,7 @@
       "dom"
     ],
     "removeComments": true,
+    "resolveJsonModule": true,
     "allowSyntheticDefaultImports": false,
     "jsx": "react",
     "allowJs": true,
@@ -26,6 +27,9 @@
       ],
       "@editor/*": [
         "src/lib/patd/editor/*"
+      ],
+      "@engine/*": [
+        "src/lib/engine/*"
       ]
     }
   },

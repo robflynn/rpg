@@ -11,7 +11,8 @@ let baseConfig = {
 let aliases = {
   '@patd': resolve('./src/lib/patd'),
   '@data': resolve('./data'),
-  "@editor": resolve("./src/lib/patd/editor")
+  "@editor": resolve("./src/lib/patd/editor"),
+  "@engine": resolve("./src/lib/engine")
 }
 
 let gameBundle = Object.assign({}, baseConfig, {
@@ -103,8 +104,6 @@ let editorBundle = Object.assign({}, baseConfig, {
     new VueLoaderPlugin(),
   ]
 })
-
-console.log(editorBundle)
 
 module.exports = [
   gameBundle,
