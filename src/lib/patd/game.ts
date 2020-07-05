@@ -14,6 +14,7 @@ const Tiles = require("@data/tiles.json") as Tile[]
 import TileSetData from "@data/tilesets.js"
 import Vec2d from './vec2d'
 import DebugLayer from './layers/debug_layer'
+import AssetLoader from './asset_loader'
 
 export default class Game {
   protected controller: Controller
@@ -28,7 +29,7 @@ export default class Game {
   private _fpsBuffer = []
   private _fps: number = 0
 
-  public sheet: SpriteSheet = new SpriteSheet()
+  public sheets: SpriteSheet[] = []
 
   get player(): Player { return this.world.player }
 
@@ -101,60 +102,40 @@ export default class Game {
   private processTileSets(tiles, tilesets) {
     Object.keys(tilesets).forEach(tilesetName => {
       let tileset = tilesets[tilesetName]
-      let image = new Image()
 
-      image.onload = (e) => {
-        let canvas = document.createElement("canvas")
-        let context = canvas.getContext("2d")
-        context.drawImage(image, 0, 0)
+      AssetLoader
+        .loadInlineImage(tileset.image)
+        .then(imageData => {
+          SpriteSheet
+            .load(imageData, 16, 16)
+            .then(sheet => {
+              // associate the names with the tiles, this should be cleaned up
+              let textures = tileset.textures
+              for (var i = 0; i < textures.length; i++) {
+                let texture = textures[i]
 
-        let tilesetImageData = context.getImageData(0, 0, image.width, image.height)
-
-        SpriteSheet.load(tilesetImageData, 16, 16)
-                   .then(sheet => {
-                     this.sheet = sheet
-                   })
-
-
-        tileset.textures.forEach(texture => {
-          let textureImage = context.getImageData(texture.x, texture.y, 16, 16)
-
-          for (var y = 0; y < textureImage.height; y++) {
-            for (var x = 0; x < textureImage.width; x++) {
-              let data = textureImage.data
-              let offset = (y * 16 * 4) + (x * 4)
-              let red = data[offset]
-              let green = data[offset + 1]
-              let blue = data[offset + 2]
-
-              // magenta alpha mask
-              if (red == 255 && green == 0 && blue == 255) {
-                // set alpha 0
-                data[offset + 3] = 0
+                let sprite = sheet.spriteAt(texture.x, texture.y, 10)
+                sprite.name = texture.name
+                console.log(sprite)
               }
-            }
-          }
 
-          texture.image = textureImage
+              for (var n = 0; n < tiles.length; n++) {
+                let tile = tiles[n]
+
+                if (tile["tileData"]) {
+                  let tileData = tile.tileData
+                  let tileset = tilesets[tileData.tileset]
+                  let texture = tileData.texture
+
+                  let sprite = sheet.get(texture)
+
+                  tile.image = sprite.imageData
+                }
+              }
+
+              this.sheets.push(sheet)
+            })
         })
-
-        tiles.forEach(tile => {
-          if (tile["tileData"]) {
-            let tileData = tile.tileData
-            let tileset = tilesets[tileData.tileset]
-            let texture = tileData.texture
-
-            let matchedTexture = tileset.textures.filter(tilesetTexture => tilesetTexture.name == texture)
-            if (matchedTexture && matchedTexture.length) {
-              matchedTexture = matchedTexture[0]
-
-              tile.image = matchedTexture.image
-            }
-          }
-        })
-
-      }
-      image.src = tileset.image
     })
   }
 

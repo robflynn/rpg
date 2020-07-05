@@ -6,6 +6,7 @@ import Game from "@patd/game"
 
 export default class DebugLayer extends Layer {
   private game: Game
+  private showSpriteSheets = false
 
   constructor(game: Game) {
     super()
@@ -18,19 +19,27 @@ export default class DebugLayer extends Layer {
     this.context.fillStyle = "white"
     this.context.fillText(`${this.game.fps}`, 25, 25)
 
-    if (this.game.sheet) {
-      let sprites = this.game.sheet.sprites
+    if (this.showSpriteSheets) {
+      if (this.game.sheets.length) {
+        let y = 50
 
-      let x = 0
-      let y = 50
+        for (var n = 0; n < this.game.sheets.length; n++) {
+          let sheet = this.game.sheets[n]
 
-      for (var i = 0; i < sprites.length; i++) {
-        let sprite = sprites[i]
-        console.log("Q",sprite)
+          let x = 0
+          let sprites = sheet.sprites
 
-        this.context.putImageData(sprite.imageData, x, y)
+          for (var i = 0; i < sprites.length; i++) {
+            let sprite = sprites[i]
 
-        x += sprite.width + 8
+            this.context.putImageData(sprite.imageData, x, y)
+
+            x += sprite.width + 8
+          }
+
+          y += 20
+
+        }
       }
     }
   }

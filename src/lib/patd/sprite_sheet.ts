@@ -1,6 +1,8 @@
 class Sprite {
   readonly imageData: ImageData
 
+  public name?: string
+
   get width(): number {
     return this.imageData.width
   }
@@ -20,7 +22,7 @@ export default class SpriteSheet {
   }
   private _sprites: Sprite[] = []
 
-  static load(image: ImageData, width: number, height: number): Promise<SpriteSheet> {
+  static load(image: any, width: number, height: number): Promise<SpriteSheet> {
     let tileW = width
     let tileH = height
     let tilesetW = image.width
@@ -48,11 +50,36 @@ export default class SpriteSheet {
         }
       }
 
+      console.log(sheet)
       resolve(sheet)
     })
   }
 
   addSprite(sprite: Sprite) {
-    this._sprites.push(sprite)
+    this.sprites.push(sprite)
+  }
+
+  spriteAt(x: number, y: number, cols: number = 16): Sprite {
+    let index = y * cols + x
+
+    if (index >= this.sprites.length) {
+      throw "Sprite index out of bounds of tileset."
+    }
+
+    return this.sprites[index]
+  }
+
+  get(name: string): Sprite | null {
+    let sprites = this.sprites
+
+    for (var i = 0; i < sprites.length; i++) {
+      let sprite = sprites[i]
+
+      if (sprite.name && sprite.name == name) {
+        return sprite
+      }
+    }
+
+    return null
   }
 }
