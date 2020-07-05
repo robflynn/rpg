@@ -1,18 +1,11 @@
 import AssetLoader from '@engine/asset_loader'
+import { defaultTileSize } from "@engine/defaults"
 
 export class Tile {
-  readonly id: number
-  readonly name: string
-  readonly x: number
-  readonly y: number
-
   readonly image: ImageData
+  public name: string
 
-  constructor(id: number, name: string, x: number, y: number, image: ImageData) {
-    this.id = id
-    this.name = name
-    this.x =x
-    this.y = y
+  constructor(image: ImageData) {
     this.image = image
   }
 }
@@ -22,15 +15,59 @@ export interface TileSetArguments {
   tiles: Tile[]
 }
 
-export class TileSet {
-  readonly image: ImageData
-  readonly tiles: Tile[]
-  readonly tileSize: number
+interface TileArguments {
+  x: number,
+  y: number,
+  name: string
+}
 
-  constructor(image: ImageData, tileSize: number = 16) {
-    this.image = image
+export class TileSet {
+  readonly tiles: Tile[]
+  static readonly tileSize = defaultTileSize
+
+  static createTileSet(image: ImageData, tiles: TileArguments[], tileSize = defaultTileSize): TileSet {
+    //let imageData = await AssetLoader.imageDataFromInline64(tilesetImage)
+    let tileset = new TileSet()
+    let columns = Math.ceil(image.width / tileSize)
+
+    let images = TileSet.parse(image)
+
+    for (var i = 0; i < tiles.length; i++) {
+      let tileData = tiles[i]
+      let tileIndex = tileData.y * columns + tileData.x
+
+      let tile = new Tile(images[tileIndex])
+      tile.name = tileData.name
+      tileset.tiles.push(tile)
+    }
+
+    return tileset
+  }
+
+  static parse(image: ImageData): ImageData[] {
+    let width = image.width
+    let height = image.height
+
+    let canvas = document.createElement('canvas')
+    let context = canvas.getContext('2d')
+    canvas.width = image.width
+    canvas.height = image.height
+    context.putImageData(image, 0, 0)
+
+    let tileImages = []
+
+    for (var y = 0; y < height; y += this.tileSize) {
+      for (var x = 0; x < width; x += this.tileSize) {
+        let tileImageData = context.getImageData(x, y, this.tileSize, this.tileSize)
+        tileImages.push(tileImageData)
+      }
+    }
+
+    return tileImages
+  }
+
+  constructor() {
     this.tiles = []
-    this.tileSize = 16
   }
 }
 

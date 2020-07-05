@@ -1,29 +1,19 @@
 import { Map, MapArguments } from "@engine/map"
 import { TileSet, Tile } from '@engine/tile_set'
 
-const buildTileSet = async (tilesetData, tileSize = 16) => {
-  let tilesetImage = tilesetData.image
-  let imageData = await AssetLoader.imageDataFromInline64(tilesetImage)
-
-  return new TileSet(imageData, tileSize)
+const buildMap = (mapData, tileSize = 16) => {
+  return new Map(mapData.width, mapData.height, tileSize)
 }
 
 export default class AssetLoader {
-  static loadMapFromJSON(mapData: MapArguments): Promise<Map> {
-    return new Promise((resolve, reject) => {
-      let tileSize = mapData.tileSize || 16
-      let map = new Map(mapData.width, mapData.height, tileSize)
+  static async loadMapFromJSON(mapData: MapArguments) {
+    let tileSize = mapData.tileSize || 16
 
-      buildTileSet(mapData.tileset, mapData.tileSize)
+    let map: Map = buildMap(mapData, tileSize)
 
-
-      //let tileSet = new TileSet(mapData.tileset.image, mapData.tileset.tiles,)
-
-      //let tileset = TileSet.build(mapData.tileset.image, tiles: mapData.tileset.tiles, columns: 10 })
-
-      //console.log('ts', tileset)
-      resolve(map)
-    })
+    let tilesetImageData = await AssetLoader.imageDataFromInline64(mapData.tileset.image)
+    let tileset = TileSet.createTileSet(tilesetImageData, mapData.tileset.tiles, mapData.tileSize)
+    console.log(tileset)
   }
 
     static imageDataFromInline64(encodedImage: string): Promise<ImageData> {

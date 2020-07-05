@@ -1,7 +1,7 @@
 import tilesets from "@data/tilesets"
 
 export interface TileSet {
-  image: String,
+  image: string,
   tiles: any[],
 }
 

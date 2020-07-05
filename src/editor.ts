@@ -28,7 +28,10 @@ class PatdGame extends Engine {
   onStart() {
     console.log('patd game started.')
 
+    // Show the loading scene
     this.scene = new LoadingScene(this, this.width, this.height)
+
+    this.loadGameData()
   }
 
   onUpdate(time) {
@@ -37,6 +40,11 @@ class PatdGame extends Engine {
   onStateChange(fromState, toState) {
     console.log(`State changed: ${fromState} -> ${toState}`)
   }
+
+  private async loadGameData() {
+    let map = await AssetLoader.loadMapFromJSON(DungeonMap)
+    console.log(map)
+  }
 }
 
 let engine = new PatdGame("#editor", 16 * 32, 16 * 32)
@@ -44,7 +52,8 @@ let engine = new PatdGame("#editor", 16 * 32, 16 * 32)
 AssetLoader
   .loadMapFromJSON(DungeonMap)
   .then(map => {
-    engine.loadMap(map)
+    console.log(map)
+    //engine.loadMap(map)
     engine.start()
   })
 
@@ -53,6 +62,7 @@ import Vue from 'vue'
 
 import App from "@editor/app.vue"
 import SplitPane from 'vue-splitpane'
+import AssetLoader from './lib/patd/asset_loader';
 
 Vue.component('split-pane', SplitPane)
 
