@@ -1,19 +1,29 @@
 import { Map, MapArguments } from "@engine/map"
 import { TileSet, Tile } from '@engine/tile_set'
+import { DEFAULT_TILE_SIZE } from '@engine/defaults'
+import { MapJSON } from './map'
 
-const buildMap = (mapData, tileSize = 16) => {
-  return new Map(mapData.width, mapData.height, tileSize)
+const buildMap = (mapData, { tileset }) => {
+  let tileSize = mapData.tileSize || DEFAULT_TILE_SIZE
+  let map = new Map(mapData.width, mapData.height, tileSize, tileset)
+
+  // TODO: Why did I do it this way?
+  map.tileset = tileset
+
+  return map
 }
 
 export default class AssetLoader {
-  static async loadMapFromJSON(mapData: MapArguments) {
+  static async loadMapFromJSON(mapData: MapJSON) {
     let tileSize = mapData.tileSize || 16
-
-    let map: Map = buildMap(mapData, tileSize)
 
     let tilesetImageData = await AssetLoader.imageDataFromInline64(mapData.tileset.image)
     let tileset = TileSet.createTileSet(tilesetImageData, mapData.tileset.tiles, mapData.tileSize)
-    console.log(tileset)
+
+    let map: Map = buildMap(mapData, { tileset })
+    map.tiles = mapData.tiles
+
+    console.log(map)
   }
 
     static imageDataFromInline64(encodedImage: string): Promise<ImageData> {

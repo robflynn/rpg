@@ -1,23 +1,28 @@
 import { DEFAULT_TILE_SIZE } from "@engine/defaults"
 
+export interface TileArguments {
+  x?: number,
+  y?: number,
+  name: string,
+  variants?: any, // unused
+  id?: any // unused
+}
+
 export class Tile {
   readonly image: ImageData
+  readonly id: number
   public name: string
 
-  constructor(image: ImageData) {
+  constructor(id: number, image: ImageData) {
     this.image = image
+    this.id = id
   }
 }
+
 
 export interface TileSetArguments {
   image: ImageData
   tiles: Tile[]
-}
-
-interface TileArguments {
-  x: number,
-  y: number,
-  name: string
 }
 
 export class TileSet {
@@ -35,7 +40,7 @@ export class TileSet {
       let tileData = tiles[i]
       let tileIndex = tileData.y * columns + tileData.x
 
-      let tile = new Tile(images[tileIndex])
+      let tile = new Tile(tileData.id, images[tileIndex])
       tile.name = tileData.name
       tileset.tiles.push(tile)
     }
