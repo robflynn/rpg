@@ -12,6 +12,7 @@ const Tiles = require("@data/tiles.json") as Tile[]
 
 import TileSetData from "@data/tilesets.js"
 import Vec2d from './vec2d'
+import DebugLayer from './layers/debug_layer';
 
 export default class Game {
   protected controller: Controller
@@ -22,6 +23,9 @@ export default class Game {
   readonly selector: string
 
   private _lastUpdate: any
+
+  private _fpsBuffer = []
+  private _fps: number = 0
 
   get player(): Player { return this.world.player }
 
@@ -43,13 +47,16 @@ export default class Game {
     this.processTileSets(Tiles, TileSetData)
 
     // Instantiate dependencies
-    this.world = new World({ map: GameMap, tiles: Tiles, scale: 4 })
+    this.world = new World({ map: GameMap, tiles: Tiles, scale: 6 })
     this.display = new Display()
 
     document.querySelector('#root').appendChild(this.display.canvas)
 
     let worldLayer = new WorldLayer({ world: this.world })
     this.display.addLayer(worldLayer)
+
+    let debugLayer = new DebugLayer(this)
+    this.display.addLayer(debugLayer)
 
     this.controller = new Controller()
 
@@ -64,6 +71,10 @@ export default class Game {
 
     // Render
     this.requestFrame()
+  }
+
+  get fps(): number {
+    return this._fps
   }
 
   private movePlayer(player: Player) {
@@ -148,6 +159,15 @@ export default class Game {
   }
 
   update(time) {
+    const now = performance.now()
+
+    while (this._fpsBuffer.length > 0 && this._fpsBuffer[0] <= now - 1000) {
+      this._fpsBuffer.shift()
+    }
+
+    this._fpsBuffer.push(now)
+    this._fps = this._fpsBuffer.length
+
     this.world.update()
 
     this.handleThrottledControllerInput(this.player)
