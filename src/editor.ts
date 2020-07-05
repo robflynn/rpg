@@ -7,10 +7,19 @@ const DungeonMap = require("@data/maps/dungeon.map.json")
 
 class PatdGame extends Engine {
   onCreate() {
-    console.log('patd game created')
+    console.log('patd game created.')
   }
+
+  onStart() {
+    console.log('patd game started.')
+  }
+
   onUpdate(time) {
     console.log(time)
+  }
+
+  onStateChange(fromState, toState) {
+    console.log(`State changed: ${fromState} -> ${toState}`)
   }
 }
 
