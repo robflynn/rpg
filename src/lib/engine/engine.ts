@@ -1,4 +1,5 @@
 import { Map } from "@engine/map"
+import Scene from "@engine/scene"
 
 export enum EngineState {
   notStarted = "EngineState.notStarted",
@@ -7,46 +8,6 @@ export enum EngineState {
 }
 
 export interface EngineOptions {}
-
-abstract class Renderable {
-  protected canvas: HTMLCanvasElement
-  protected context: CanvasRenderingContext2D
-
-  readonly width: number
-  readonly height: number
-
-  constructor(width: number, height: number) {
-    this.canvas = document.createElement('canvas')
-    this.context = this.canvas.getContext('2d')
-
-    this.width = width
-    this.height = height
-
-    console.log('choo choo', width, height)
-
-    this.autoSize()
-  }
-
-  redraw() {
-    this.context.resetTransform()
-    this.context.clearRect(0, 0, this.canvas.width, this.canvas.height)
-
-    this.render()
-  }
-
-  private autoSize() {
-    this.canvas.width = this.width
-    this.canvas.height = this.height
-  }
-
-  abstract render()
-}
-
-abstract class Scene extends Renderable {
-  get buffer(): HTMLCanvasElement {
-    return this.canvas
-  }
-}
 
 class LoadingScene extends Scene {
   render() {
@@ -136,15 +97,15 @@ export default class Engine {
   }
 
   private update(fTime) {
-    this.redraw()
+    this.scene.update(fTime)
 
+    this.render()
     this.onUpdate(fTime)
 
     window.requestAnimationFrame(this.update.bind(this))
   }
 
   private render() {
-    this.scene.redraw()
     this.context.drawImage(this.scene.buffer, 0, 0)
   }
 
