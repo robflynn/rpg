@@ -9,12 +9,43 @@ import WorldLayer from "@patd/layers/world_layer"
 import SpriteSheet from "@patd/sprite_sheet"
 
 const GameMap = require("@data/map.json") as Map
+const DungeonMap = require("@data/maps/dungeon.map.json") as MapData
 const Tiles = require("@data/tiles.json") as Tile[]
 
 import TileSetData from "@data/tilesets.js"
 import Vec2d from './vec2d'
 import DebugLayer from './layers/debug_layer'
 import AssetLoader from './asset_loader'
+
+type TileSetTileID = number
+
+class TileSetTile {
+  readonly id: TileSetTileID
+  readonly name: string
+  readonly x: number
+  readonly y: number
+
+  readonly image: ImageData
+
+  constructor(id: TileSetTileID, name: string, x: number, y: number, image: ImageData) {
+    this.id = id
+    this.name = name
+    this.x =x
+    this.y = y
+    this.image = image
+  }
+}
+
+interface TileSet {
+  image: String,
+  tiles: TileSetTile[]
+}
+
+interface MapData {
+  id: string,
+  map: Map,
+  tileSet: TileSet,
+}
 
 export default class Game {
   protected controller: Controller
