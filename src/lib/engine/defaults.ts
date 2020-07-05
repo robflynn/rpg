@@ -1,5 +1,5 @@
-const defaultTileSize = 16
+const DEFAULT_TILE_SIZE = 16
 
 export {
-  defaultTileSize
+  DEFAULT_TILE_SIZE
 }

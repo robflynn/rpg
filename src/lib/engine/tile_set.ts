@@ -1,5 +1,4 @@
-import AssetLoader from '@engine/asset_loader'
-import { defaultTileSize } from "@engine/defaults"
+import { DEFAULT_TILE_SIZE } from "@engine/defaults"
 
 export class Tile {
   readonly image: ImageData
@@ -23,9 +22,9 @@ interface TileArguments {
 
 export class TileSet {
   readonly tiles: Tile[]
-  static readonly tileSize = defaultTileSize
+  static readonly tileSize = DEFAULT_TILE_SIZE
 
-  static createTileSet(image: ImageData, tiles: TileArguments[], tileSize = defaultTileSize): TileSet {
+  static createTileSet(image: ImageData, tiles: TileArguments[], tileSize = DEFAULT_TILE_SIZE): TileSet {
     //let imageData = await AssetLoader.imageDataFromInline64(tilesetImage)
     let tileset = new TileSet()
     let columns = Math.ceil(image.width / tileSize)
