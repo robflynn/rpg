@@ -35,8 +35,17 @@ export class WorldScene extends Scene {
     let sy = player.y * this.tileSize
 
     this.context.resetTransform()
-    this.context.fillStyle = 'red'
-    this.context.fillRect(sx, sy, this.tileSize, this.tileSize)
+
+    let tile = this.world.map.tileset.getTileByName("player")
+
+    let canvas = document.createElement('canvas')
+    let c2d = canvas.getContext('2d')
+    canvas.width = this.tileSize
+    canvas.height = this.tileSize
+    c2d.putImageData(tile.image, 0, 0)
+
+    this.context.drawImage(canvas, sx, sy)
+    console.log(tile.image)
 
     // Draw facing vector
     let ex = sx + this.tileSize

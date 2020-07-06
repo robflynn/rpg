@@ -48,7 +48,21 @@ export class TileSet {
     return tileset
   }
 
-  static parse(image: ImageData): ImageData[] {
+  constructor() {
+    this.tiles = []
+  }
+
+  getTileByName(name: string): Tile | null {
+    for (var i = 0; i < this.tiles.length; i++) {
+      let tile = this.tiles[i]
+
+      if (tile.name == name) { return tile }
+    }
+
+    return null
+  }
+
+  private static parse(image: ImageData): ImageData[] {
     let width = image.width
     let height = image.height
 
@@ -56,6 +70,9 @@ export class TileSet {
     let context = canvas.getContext('2d')
     canvas.width = image.width
     canvas.height = image.height
+    context.clearRect(0, 0, width, height)
+    context.fillStyle = 'blue'
+    context.fillRect(0, 0, width, height)
     context.putImageData(image, 0, 0)
 
     let tileImages = []
@@ -68,10 +85,6 @@ export class TileSet {
     }
 
     return tileImages
-  }
-
-  constructor() {
-    this.tiles = []
   }
 }
 

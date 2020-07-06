@@ -105,6 +105,12 @@
         "name": "wall_lower_right",
         "x": 5,
         "y": 4
+      },
+      {
+        "id": 99,
+        "name": "player",
+        "x": 7,
+        "y": 9
       }
     ]
   }
