@@ -3,6 +3,7 @@ import { Map } from '@engine/map'
 import Engine from '@engine/engine'
 import { Tile } from '@engine/tile_set'
 import { World } from '@engine/world'
+import { Direction } from "@engine/world"
 
 export class WorldScene extends Scene {
   readonly world: World
@@ -23,6 +24,49 @@ export class WorldScene extends Scene {
 
   render() {
     this.renderMap()
+    this.renderPlayer()
+  }
+
+  private renderPlayer() {
+    let player = this.world.player
+
+    // draw facing direction
+    let sx = player.x * this.tileSize
+    let sy = player.y * this.tileSize
+
+    this.context.resetTransform()
+    this.context.fillStyle = 'red'
+    this.context.fillRect(sx, sy, this.tileSize, this.tileSize)
+
+    // Draw facing vector
+    let ex = sx + this.tileSize
+    let ey = sy + this.tileSize
+    let cx = (ex - sx) / 2 + sx
+    let cy = (ey - sx) / 2 + sy
+
+    let dx = 0
+    let dy = 0
+
+    if (player.direction == Direction.east) {
+      dx = this.tileSize
+      dy = 1
+    }
+    else if (player.direction == Direction.north) {
+      dx = 1
+      dy = -this.tileSize
+    }
+    else if (player.direction == Direction.south) {
+      dx = 1
+      dy = this.tileSize
+    }
+    else if (player.direction == Direction.west) {
+      dx = -this.tileSize
+      dy = 1
+    }
+
+    this.context.fillStyle = 'magenta'
+    this.context.fillRect(cx, cy, dx, dy)
+
   }
 
   private renderMap() {

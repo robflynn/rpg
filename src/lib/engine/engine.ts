@@ -1,6 +1,7 @@
 import { Map } from "@engine/map"
 import Scene from "@engine/scene"
 import World from "@engine/world"
+import Controller from "@engine/controller"
 
 export enum EngineState {
   notStarted = "EngineState.notStarted",
@@ -33,6 +34,7 @@ export default class Engine {
 
   protected scene: Scene
   protected world: World
+  protected controller: Controller
 
   private canvas: HTMLCanvasElement
   private context: CanvasRenderingContext2D
@@ -46,6 +48,7 @@ export default class Engine {
     this.selector = selector
 
     this.world = new World()
+    this.controller = new Controller()
 
     this.createCanvas()
     this.onCreate()
