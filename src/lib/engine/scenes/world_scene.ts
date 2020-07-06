@@ -31,8 +31,8 @@ export class WorldScene extends Scene {
     let player = this.world.player
 
     // draw facing direction
-    let sx = player.x * this.tileSize
-    let sy = player.y * this.tileSize
+    let sx = player.position.x
+    let sy = player.position.y
 
     this.context.resetTransform()
 
@@ -44,8 +44,8 @@ export class WorldScene extends Scene {
     canvas.height = this.tileSize
     c2d.putImageData(tile.image, 0, 0)
 
+    console.log(sx, sy)
     this.context.drawImage(canvas, sx, sy)
-    console.log(tile.image)
 
     // Draw facing vector
     let ex = sx + this.tileSize

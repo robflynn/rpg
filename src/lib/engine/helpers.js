@@ -1,4 +1,9 @@
 const encodedImageToImageData = (encodedImage) => {
+  return encodedImageToCanvas(encodedImage)
+         .getImageData(0, 0, encodedImage.width, encodedImage.height)
+}
+
+const encodedImageToCanvas = (encodedImage) => {
   let canvas = document.createElement('canvas')
   let context = canvas.getContext('2d')
 
@@ -7,5 +12,5 @@ const encodedImageToImageData = (encodedImage) => {
 
   context.drawImage(encodedImage, 0, 0)
 
-  return context.getImageData(0, 0, encodedImage.width, encodedImage.height)
+  return canvas
 }
