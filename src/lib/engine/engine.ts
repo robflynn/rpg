@@ -91,7 +91,7 @@ export default class Engine {
       this.scene.update(fTime)
     }
 
-    this.render()
+    this.redraw()
     this.onUpdate(fTime)
 
     window.requestAnimationFrame(this.update.bind(this))

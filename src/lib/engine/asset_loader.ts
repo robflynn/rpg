@@ -23,7 +23,7 @@ export default class AssetLoader {
     let map: Map = buildMap(mapData, { tileset })
     map.tiles = mapData.tiles
 
-    console.log(map)
+    return map
   }
 
     static imageDataFromInline64(encodedImage: string): Promise<ImageData> {
