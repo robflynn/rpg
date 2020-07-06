@@ -15,7 +15,13 @@ export class Player {
   x: number = 1
   y: number = 1
 
-  direction: Direction = Direction.north
+  get direction(): Direction { return this._direction }
+  set direction(direction: Direction) { this._direction = direction; console.log(direction, ' changed direction. ') }
+  private _direction: Direction = Direction.east
+
+  face(direction: Direction) {
+    this.direction = direction
+  }
 }
 
 export class World {

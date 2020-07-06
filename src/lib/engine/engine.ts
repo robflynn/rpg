@@ -1,6 +1,6 @@
 import { Map } from "@engine/map"
 import Scene from "@engine/scene"
-import World from "@engine/world"
+import World, { Direction } from "@engine/world"
 import Controller from "@engine/controller"
 
 export enum EngineState {
@@ -93,7 +93,31 @@ export default class Engine {
     this.update(0)
   }
 
+  private handleControllerInput() {
+    if (this.controller.right) {
+      this.world.player.direction = Direction.east
+//      return this.world.move(player, new Vec2d({ x: 1, y: 0 }))
+    }
+
+    if (this.controller.left) {
+      this.world.player.direction = Direction.west
+//      return this.world.move(player, new Vec2d({ x: -1, y: 0 }))
+    }
+
+    if (this.controller.up) {
+      this.world.player.direction = Direction.north
+//      return this.world.move(player, new Vec2d({ x: 0, y: -1 }))
+    }
+
+    if (this.controller.down) {
+      this.world.player.direction = Direction.south
+//      return this.world.move(player, new Vec2d({ x: 0, y: 1 }))
+    }
+  }
+
   private update(fTime) {
+    this.handleControllerInput()
+
     if (this.scene) {
       this.scene.update(fTime)
     }
