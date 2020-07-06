@@ -14,10 +14,10 @@ export enum Direction {
 
 export class Player {
   movementVector: Vec2d
-  position: Vec2d = new Vec2d(0, 0)
+  position: Vec2d = Vec2d.zero
 
   get direction(): Direction { return this._direction }
-  set direction(direction: Direction) { this._direction = direction; console.log(direction, ' changed direction. ') }
+  set direction(direction: Direction) { this._direction = direction; }
   private _direction: Direction = Direction.east
 
   face(direction: Direction) {
@@ -25,7 +25,7 @@ export class Player {
   }
 
   update(elapsedTime: number) {
-    console.log("Player updated: ", elapsedTime)
+    //console.log("Player updated: ", elapsedTime)
   }
 
   // TODO: Temporary method.  Refactor.

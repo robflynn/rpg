@@ -2,6 +2,7 @@ import { Map } from "@engine/map"
 import Scene from "@engine/scene"
 import World, { Direction } from "@engine/world"
 import Controller from "@engine/controller"
+import Vec2d from "./vec2d"
 
 export enum EngineState {
   notStarted = "EngineState.notStarted",
@@ -94,24 +95,32 @@ export default class Engine {
   }
 
   private handleControllerInput() {
+    let dx = 0
+    let dy = 0
+
     if (this.controller.right) {
+      dx += 1
       this.world.player.direction = Direction.east
-//      return this.world.move(player, new Vec2d({ x: 1, y: 0 }))
     }
 
     if (this.controller.left) {
+      dx -= 1
       this.world.player.direction = Direction.west
-//      return this.world.move(player, new Vec2d({ x: -1, y: 0 }))
     }
 
     if (this.controller.up) {
+      dy -= 1
       this.world.player.direction = Direction.north
-//      return this.world.move(player, new Vec2d({ x: 0, y: -1 }))
     }
 
     if (this.controller.down) {
+      dy += 1
       this.world.player.direction = Direction.south
-//      return this.world.move(player, new Vec2d({ x: 0, y: 1 }))
+    }
+
+    if ((dx !=0) || (dy != 0)) {
+      let vector = new Vec2d(dx, dy)
+      console.log("Vector: ", vector, "  l: ", vector.length, "  n: ", vector.normalized)
     }
   }
 

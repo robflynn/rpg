@@ -44,7 +44,7 @@ export class WorldScene extends Scene {
     canvas.height = this.tileSize
     c2d.putImageData(tile.image, 0, 0)
 
-    console.log(sx, sy)
+    //console.log(sx, sy)
     this.context.drawImage(canvas, sx, sy)
 
     // Draw facing vector
