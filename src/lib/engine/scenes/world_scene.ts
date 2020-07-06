@@ -1,22 +1,24 @@
 import { Scene } from '@engine/scene'
 import { Map } from '@engine/map'
 import Engine from '@engine/engine'
-import { Tile } from '../tile_set'
+import { Tile } from '@engine/tile_set'
+import { World } from '@engine/world'
 
-export default class MapScene extends Scene {
-  readonly map: Map
+export class WorldScene extends Scene {
+  readonly world: World
 
-  constructor(engine: Engine, map: Map) {
-    let width = map.tileSize * map.width
-    let height = map.tileSize * map.height
+  get tileSize(): number {
+    return this.map.tileSize
+  }
 
-    // if the map is smaller than the engine window just use the engine size
-    if (width < engine.width) { width = engine.width }
-    if (height < engine.height) { height = engine.height }
+  get map(): Map {
+    return this.world.map
+  }
 
-    super(engine, width, height)
+  constructor(engine: Engine, world: World) {
+    super(engine, engine.width, engine.height)
 
-    this.map = map
+    this.world = world
   }
 
   render() {
@@ -41,9 +43,11 @@ export default class MapScene extends Scene {
   }
 
   private renderTile(tile: Tile, x: number, y: number) {
-    let sx = x * this.map.tileSize
-    let sy = y * this.map.tileSize
+    let sx = x * this.tileSize
+    let sy = y * this.tileSize
 
     this.context.putImageData(tile.image, sx, sy)
   }
 }
+
+export default WorldScene

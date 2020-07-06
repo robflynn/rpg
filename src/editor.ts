@@ -4,7 +4,8 @@ import AssetLoader from "@engine/asset_loader"
 const DungeonMap = require("@data/maps/dungeon.map.json")
 
 import Scene from "@engine/scene"
-import MapScene from "@engine/scenes/map_scene"
+import WorldScene from "@engine/scenes/world_scene"
+import { World } from "@engine/world"
 
 class LoadingScene extends Scene {
   render() {
@@ -42,7 +43,10 @@ class PatdGame extends Engine {
 
   private async loadGameData() {
     let map = await AssetLoader.loadMapFromJSON(DungeonMap)
-    let scene = new MapScene(this, map)
+    let world = new World()
+    world.map = map
+
+    let scene = new WorldScene(this, world)
 
     this.scene = scene
   }
