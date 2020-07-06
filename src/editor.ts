@@ -43,9 +43,7 @@ class PatdGame extends Engine {
 
   private async loadGameData() {
     let map = await AssetLoader.loadMapFromJSON(DungeonMap)
-    let world = new World()
-    world.map = map
-
+    let world = new World({ map })
     let scene = new WorldScene(this, world)
 
     this.scene = scene
