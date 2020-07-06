@@ -27,11 +27,7 @@ export class Map {
   readonly tileSize: number
 
   public tiles: TileMap[]
-
-  set tileset(value: TileSet) {
-    this._tileset = value
-  }
-  private _tileset: TileSet
+  public tileset: TileSet
 
   constructor(width: number, height: number, tileSize: number = DEFAULT_TILE_SIZE, tiles: TileMap[] = []) {
     this.width = width

@@ -44,37 +44,11 @@ class PatdGame extends Engine {
 
   private async loadGameData() {
     let map = await AssetLoader.loadMapFromJSON(DungeonMap)
-    let scene = new MapScene(this, this.width, this.height, map)
+    let scene = new MapScene(this, map)
 
     this.scene = scene
   }
 }
 
 let engine = new PatdGame("#editor", 16 * 32, 16 * 32)
-
-AssetLoader
-  .loadMapFromJSON(DungeonMap)
-  .then(map => {
-    console.log(map)
-    //engine.loadMap(map)
-    engine.start()
-  })
-
-/*
-import Vue from 'vue'
-
-import App from "@editor/app.vue"
-import SplitPane from 'vue-splitpane'
-import AssetLoader from './lib/patd/asset_loader';
-
-Vue.component('split-pane', SplitPane)
-
-document.addEventListener('DOMContentLoaded', () => {
-  let editorElement = document.querySelector('#editor')
-  if (editorElement) {
-    new Vue({
-      el: editorElement,
-      render: h => h(App),
-    })
-  }
-})*/
+engine.start()
