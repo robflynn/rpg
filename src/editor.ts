@@ -1,5 +1,3 @@
-console.log('new engine choo choo')
-
 import Engine from "@engine/engine"
 import AssetLoader from "@engine/asset_loader"
 
