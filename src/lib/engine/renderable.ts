@@ -8,6 +8,7 @@ export abstract class Renderable {
   constructor(width: number, height: number) {
     this.canvas = document.createElement('canvas')
     this.context = this.canvas.getContext('2d')
+    this.context.imageSmoothingEnabled = true
 
     this.width = width
     this.height = height

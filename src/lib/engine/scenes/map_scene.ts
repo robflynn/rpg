@@ -22,7 +22,7 @@ export default class MapScene extends Scene {
   render() {
     this.renderMap()
 
-    this.context.font = '24px monospace'
+    this.context.font = '18px Arial'
     this.context.fillText("Hello, I am the map scene.", 100, 100)
   }
 

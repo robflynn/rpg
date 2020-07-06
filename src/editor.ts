@@ -48,5 +48,5 @@ class PatdGame extends Engine {
   }
 }
 
-let engine = new PatdGame("#editor", 16 * 32, 16 * 32)
+let engine = new PatdGame("#editor", 16 * 32 * 2, 16 * 32 * 2)
 engine.start()

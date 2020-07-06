@@ -99,7 +99,7 @@ export default class Engine {
 
   private render() {
     if (this.scene) {
-      this.context.drawImage(this.scene.buffer, 0, 0)
+      this.context.drawImage(this.scene.buffer, 0, 0, this.scene.buffer.width * 3, this.scene.buffer.height * 3)
     }
   }
 
