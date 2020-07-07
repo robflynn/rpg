@@ -3,6 +3,8 @@ const { resolve } = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { VueLoaderPlugin } = require('vue-loader')
 var MiniCssExtractPlugin = require('mini-css-extract-plugin')
+var CopyWebpackPlugin = require('copy-webpack-plugin');
+
 
 let baseConfig = {
   module: {},
@@ -102,6 +104,13 @@ let editorBundle = Object.assign({}, baseConfig, {
     }),
 
     new VueLoaderPlugin(),
+
+    new CopyWebpackPlugin({
+      patterns: [
+        { from: 'data/maps', to: 'data/maps' },
+        { from: 'data/sprites', to: 'data/sprites' },
+      ]
+    })
   ]
 })
 

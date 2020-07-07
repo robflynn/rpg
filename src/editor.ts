@@ -1,11 +1,18 @@
 import Engine from "@engine/engine"
-import AssetLoader from "@engine/asset_loader"
+import { global as AssetLoader } from "@engine/asset_loader"
 
 const DungeonMap = require("@data/maps/dungeon.map.json")
 
 import Scene from "@engine/scene"
 import WorldScene from "@engine/scenes/world_scene"
 import { World } from "@engine/world"
+
+let assets = [
+  "maps/dungeon.map.json",
+  "sprites/dungeon_tiles.png"
+]
+
+let pendingAssets = Object.keys(assets).length
 
 class LoadingScene extends Scene {
   render() {
@@ -31,7 +38,20 @@ class PatdGame extends Engine {
     // Show the loading scene
     this.scene = new LoadingScene(this, this.width, this.height)
 
-    this.loadGameData()
+    this.loadAssets()
+  }
+
+  async loadAssets() {
+    Promise.all(assets.map(asset => this.loadAsset(asset)))
+      .then(() => {
+        this.initializeGame()
+      })
+  }
+
+  async loadAsset(asset: string) {
+    let name = asset
+
+    return AssetLoader.loadAsset(name)
   }
 
   onUpdate(time) {
@@ -41,12 +61,16 @@ class PatdGame extends Engine {
     console.log(`State changed: ${fromState} -> ${toState}`)
   }
 
-  private async loadGameData() {
-    let map = await AssetLoader.loadMapFromJSON(DungeonMap)
-    this.world.map = map
+  private async initializeGame() {
+    let mapJSON = AssetLoader.get("maps/dungeon.map.json")
 
-    let scene = new WorldScene(this, this.world)
-    this.scene = scene
+    AssetLoader.loadMapFromJSON(mapJSON)
+      .then(map => {
+        this.world.map = map
+
+        let scene = new WorldScene(this, this.world)
+        this.scene = scene
+      })
   }
 }
 

@@ -19,7 +19,6 @@ export class Tile {
   }
 }
 
-
 export interface TileSetArguments {
   image: ImageData
   tiles: Tile[]
@@ -29,7 +28,7 @@ export class TileSet {
   readonly tiles: Tile[]
   static readonly tileSize = DEFAULT_TILE_SIZE
 
-  static createTileSet(image: ImageData, tiles: TileArguments[], tileSize = DEFAULT_TILE_SIZE): TileSet {
+  static createTileSet(image: HTMLCanvasElement, tiles: TileArguments[], tileSize = DEFAULT_TILE_SIZE): TileSet {
     //let imageData = await AssetLoader.imageDataFromInline64(tilesetImage)
     let tileset = new TileSet()
     let columns = Math.ceil(image.width / tileSize)
@@ -62,7 +61,7 @@ export class TileSet {
     return null
   }
 
-  private static parse(image: ImageData): ImageData[] {
+  private static parse(image: HTMLCanvasElement): ImageData[] {
     let width = image.width
     let height = image.height
 
@@ -71,9 +70,7 @@ export class TileSet {
     canvas.width = image.width
     canvas.height = image.height
     context.clearRect(0, 0, width, height)
-    context.fillStyle = 'blue'
-    context.fillRect(0, 0, width, height)
-    context.putImageData(image, 0, 0)
+    context.drawImage(image, 0, 0)
 
     let tileImages = []
 
