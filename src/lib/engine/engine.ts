@@ -2,7 +2,7 @@ import { Map } from "@engine/map"
 import Scene from "@engine/scene"
 import World, { Direction } from "@engine/world"
 import Controller from "@engine/controller"
-import Vec2d from "./vec2d"
+import Vec2 from "@engine/vec2"
 
 export enum EngineState {
   notStarted = "EngineState.notStarted",
@@ -119,7 +119,7 @@ export default class Engine {
     }
 
     if ((dx !=0) || (dy != 0)) {
-      let vector = new Vec2d(dx, dy)
+      let vector = new Vec2(dx, dy)
       console.log("Vector: ", vector, "  l: ", vector.length, "  n: ", vector.normalized)
     }
   }

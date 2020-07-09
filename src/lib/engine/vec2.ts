@@ -1,15 +1,15 @@
-export class Vec2d {
+export class Vec2 {
   x: number
   y: number
 
-  static get zero():Vec2d {
-    return new Vec2d(0, 0)
+  static get zero():Vec2 {
+    return new Vec2(0, 0)
   }
 
-  get normalized(): Vec2d {
+  get normalized(): Vec2 {
     let length = this.length
 
-    return new Vec2d(this.x / length, this.y / length)
+    return new Vec2(this.x / length, this.y / length)
   }
 
   get length(): number {
@@ -21,7 +21,7 @@ export class Vec2d {
     this.y = y
   }
 
-  add(rightValue: Vec2d): Vec2d {
+  add(rightValue: Vec2): Vec2 {
     this.x += rightValue.x
     this.y += rightValue.y
 
@@ -29,4 +29,4 @@ export class Vec2d {
   }
 }
 
-export default Vec2d
+export default Vec2
