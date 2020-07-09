@@ -57,7 +57,7 @@ export class WorldScene extends Scene {
     let ex = sx + this.tileSize
     let ey = sy + this.tileSize
     let cx = (ex - sx) / 2 + sx
-    let cy = (ey - sx) / 2 + sy
+    let cy = (ey - sy) / 2 + sy
 
     let dx = 0
     let dy = 0
