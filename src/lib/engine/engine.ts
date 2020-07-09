@@ -124,15 +124,15 @@ export default class Engine {
     }
   }
 
-  private update(fTime) {
+  private update(elapsedTime) {
     this.handleControllerInput()
 
     if (this.scene) {
-      this.scene.update(fTime)
+      this.scene.update(elapsedTime)
     }
 
     this.redraw()
-    this.onUpdate(fTime)
+    this.onUpdate(elapsedTime)
 
     window.requestAnimationFrame(this.update.bind(this))
   }

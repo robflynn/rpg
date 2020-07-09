@@ -2,7 +2,7 @@ import Vec2 from "@engine/vec2"
 import { Direction } from "@engine/world"
 
 export class Player {
-  movementVector: Vec2
+  velocity: Vec2
   position: Vec2 = Vec2.zero
 
   get direction(): Direction { return this._direction }
@@ -14,7 +14,6 @@ export class Player {
   }
 
   update(elapsedTime: number) {
-    //console.log("Player updated: ", elapsedTime)
   }
 
   // TODO: Temporary method.  Refactor.

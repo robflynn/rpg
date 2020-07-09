@@ -22,6 +22,12 @@ export class WorldScene extends Scene {
     this.world = world
   }
 
+  update(elapsedTime) {
+    this.world.player.update(elapsedTime)
+
+    super.update(elapsedTime)
+  }
+
   render() {
     this.renderMap()
     this.renderPlayer()

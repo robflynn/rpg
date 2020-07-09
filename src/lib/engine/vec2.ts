@@ -21,11 +21,24 @@ export class Vec2 {
     this.y = y
   }
 
-  add(rightValue: Vec2): Vec2 {
-    this.x += rightValue.x
-    this.y += rightValue.y
+  add(rightValue: number): Vec2
+  add(rightValue: Vec2): Vec2
+  add<T>(rightValue: number | Vec2): Vec2 {
+    if (typeof rightValue === "number") {
+      return new Vec2(this.x + rightValue, this.y + rightValue)
+    }
 
-    return this
+    return new Vec2(this.x + rightValue.x, this.y + rightValue.y)
+  }
+
+  multiply(multiplier: number): Vec2
+  multiply(multiplier: Vec2): Vec2
+  multiply<T>(multiplier: number | Vec2): Vec2 {
+    if (typeof multiplier === "number") {
+      return new Vec2(multiplier * this.x, multiplier * this.y)
+    }
+
+    return new Vec2(multiplier.x * this.x, multiplier.y * this.y)
   }
 }
 

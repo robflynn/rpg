@@ -14,7 +14,7 @@ export abstract class Scene extends Renderable {
     this.engine = engine
   }
 
-  update(fTime) {
+  update(elapsedTime) {
     this.render()
   }
 }
