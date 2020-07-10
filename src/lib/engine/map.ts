@@ -7,16 +7,8 @@ export interface MapJSON {
   width: number,
   height: number,
   tiles: number[],
+  walls: number[],
   tileset: any
-}
-
-export interface MapArguments {
-  id: string,
-  tileSize: number,
-  width: number,
-  height: number,
-  tiles: number[],
-  tileset: TileSet
 }
 
 type TileMap = number
@@ -27,6 +19,7 @@ export class Map {
   readonly tileSize: number
 
   public tiles: TileMap[]
+  public walls: number[] = []
   public tileset: TileSet
 
   constructor(width: number, height: number, tileSize: number = DEFAULT_TILE_SIZE, tiles: TileMap[] = []) {

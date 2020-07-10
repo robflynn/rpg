@@ -1,5 +1,6 @@
 import { Map } from '@engine/map'
 import Player from "@engine/player"
+import Vec2 from '@engine/vec2'
 
 export interface WorldArguments {
   map?: Map
@@ -27,6 +28,11 @@ export class World {
   }
 
   private mapChanged() { }
+
+  public canBeOccupied(position: Vec2): boolean {
+    return true
+  }
+
 }
 
 export default World

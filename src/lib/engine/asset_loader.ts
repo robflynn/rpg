@@ -1,8 +1,6 @@
-import { Map, MapArguments } from "@engine/map"
-import { TileSet, Tile } from '@engine/tile_set'
+import { Map, MapJSON } from "@engine/map"
+import TileSet from '@engine/tile_set'
 import { DEFAULT_TILE_SIZE } from '@engine/defaults'
-import { MapJSON } from '@engine/map'
-import { Sprite, SpriteImage } from '@engine/sprite'
 
 interface OnLoadAble {
   onload: any;

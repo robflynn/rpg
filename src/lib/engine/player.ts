@@ -33,7 +33,7 @@ export class Player {
 
     let newPosition = this.position.add(this.velocity)
 
-    this.position = newPosition
+//    this.position = newPosition
   }
 
   // TODO: Temporary method.  Refactor.
