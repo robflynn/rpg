@@ -20,8 +20,6 @@ export class Player {
   }
 
   update(elapsedTime: number) {
-    var state
-
     if ((Math.abs(this.velocity.x) > 0) || (Math.abs(this.velocity.y) > 0)) {
       this.state = PlayerState.walking
     } else {

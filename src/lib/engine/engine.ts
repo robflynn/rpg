@@ -94,39 +94,7 @@ export default class Engine {
     this.update(0)
   }
 
-  private handleControllerInput() {
-    let dx = 0
-    let dy = 0
-
-    if (this.controller.right) {
-      dx += 1
-      this.world.player.direction = Direction.east
-    }
-
-    if (this.controller.left) {
-      dx -= 1
-      this.world.player.direction = Direction.west
-    }
-
-    if (this.controller.up) {
-      dy -= 1
-      this.world.player.direction = Direction.north
-    }
-
-    if (this.controller.down) {
-      dy += 1
-      this.world.player.direction = Direction.south
-    }
-
-    if ((dx !=0) || (dy != 0)) {
-      let vector = new Vec2(dx, dy)
-      console.log("Vector: ", vector, "  l: ", vector.length, "  n: ", vector.normalized)
-    }
-  }
-
   private update(elapsedTime) {
-    this.handleControllerInput()
-
     if (this.scene) {
       this.scene.update(elapsedTime)
     }

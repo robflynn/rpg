@@ -1,12 +1,15 @@
-import { Scene } from '@engine/scene'
-import { Map } from '@engine/map'
+import Scene from '@engine/scene'
+import Map from '@engine/map'
 import Engine from '@engine/engine'
 import { Tile } from '@engine/tile_set'
-import { World } from '@engine/world'
-import { Direction } from "@engine/world"
+import { World, Direction } from '@engine/world'
+import Controller from '@engine/controller'
+import { Vec2 } from '@engine/vec2'
 
 export class WorldScene extends Scene {
   readonly world: World
+
+  private controller: Controller = new Controller()
 
   get tileSize(): number {
     return this.map.tileSize
@@ -23,9 +26,41 @@ export class WorldScene extends Scene {
   }
 
   update(elapsedTime) {
+    this.handleControllerInput()
+
     this.world.player.update(elapsedTime)
 
     super.update(elapsedTime)
+  }
+
+  private handleControllerInput() {
+    let dx = 0
+    let dy = 0
+
+    if (this.controller.right) {
+      dx += 1
+      this.world.player.direction = Direction.east
+    }
+
+    if (this.controller.left) {
+      dx -= 1
+      this.world.player.direction = Direction.west
+    }
+
+    if (this.controller.up) {
+      dy -= 1
+      this.world.player.direction = Direction.north
+    }
+
+    if (this.controller.down) {
+      dy += 1
+      this.world.player.direction = Direction.south
+    }
+
+    if ((dx !=0) || (dy != 0)) {
+      let vector = new Vec2(dx, dy)
+      console.log("Vector: ", vector, "  l: ", vector.length, "  n: ", vector.normalized)
+    }
   }
 
   render() {
