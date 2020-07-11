@@ -1,9 +1,14 @@
 import Vec2 from "@engine/vec2"
+import Sprite from "@engine/sprite"
 
 export class Entity {
   get position(): Vec2 { return this._position }
   set position(position: Vec2) { this._position = position; this.positionChanged() }
   protected _position: Vec2 = Vec2.zero
+
+  get sprite(): Sprite { return this._sprite }
+  set sprite(sprite: Sprite) { this._sprite = sprite; this.spriteChanged(); }
+  protected _sprite?: Sprite
 
   positionChanged() {}
 
@@ -14,6 +19,8 @@ export class Entity {
 
     this.position = new Vec2(xpos, ypos)
   }
+
+  spriteChanged() { console.log('a sprite was changed') }
 }
 
 export default Entity

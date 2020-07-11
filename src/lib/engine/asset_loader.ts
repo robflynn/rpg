@@ -105,7 +105,7 @@ export default class AssetLoader {
     let mapName = mapData.id
     let tileset = TileSet.createTileSet(tilesetImageData, mapData.tileset.tiles, mapData.tileSize || DEFAULT_TILE_SIZE)
 
-    this.addAsset(mapName, tileset)
+    this.addAsset(`${mapName}_tileset`, tileset)
 
     let map: Map = buildMap(mapData, { tileset })
     map.tiles = mapData.tiles

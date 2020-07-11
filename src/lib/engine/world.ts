@@ -2,6 +2,7 @@ import Map from '@engine/map'
 import Player from "@engine/entities/player"
 import Vec2 from '@engine/vec2'
 import Bounds from '@engine/bounds'
+import Entity from "@engine/entity"
 import { DEFAULT_TILE_SIZE } from '@engine/defaults'
 
 export interface WorldArguments {
@@ -50,6 +51,9 @@ export class World {
   private _map: Map
   private _walls: Wall[] = []
 
+  get entities(): Entity[] { return this._entities }
+  protected _entities: Entity[] = []
+
   player: Player
 
   constructor({ map }: WorldArguments = {}) {
@@ -58,6 +62,14 @@ export class World {
     this.player = new Player()
     this.player.teleportTo(2, 2)
   }
+
+  addEntity(entity: Entity) {
+    this._entities.push(entity)
+
+    this.entityAdded(entity)
+  }
+
+  protected entityAdded(entity: Entity) { console.log('entity added: ', entity)}
 
   private mapChanged() {
     this.findWalls()

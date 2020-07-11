@@ -5,6 +5,7 @@ import { Tile } from '@engine/tile_set'
 import { World, Direction } from '@engine/world'
 import Controller from '@engine/controller'
 import { Vec2 } from '@engine/vec2'
+import Entity from "@engine/entity"
 
 export class WorldScene extends Scene {
   readonly world: World
@@ -79,6 +80,7 @@ export class WorldScene extends Scene {
     this.renderMap()
     this.renderWalls()
     this.renderPlayer()
+    this.renderEntities()
   }
 
   renderWalls() {
@@ -91,6 +93,22 @@ export class WorldScene extends Scene {
 
         if (!wall) { continue }
       }
+    }
+  }
+
+  private renderEntities() {
+    let entities = this.world.entities
+
+    for (var i = 0; i < entities.length; i++) {
+      let entity = entities[i]
+
+      this.renderEntity(entity)
+    }
+  }
+
+  private renderEntity(entity: Entity) {
+    if (entity.sprite) {
+      this.context.drawImage(entity.sprite.image, entity.position.x, entity.position.y)
     }
   }
 

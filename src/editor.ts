@@ -6,6 +6,8 @@ const DungeonMap = require("@data/maps/dungeon.map.json")
 import Scene from "@engine/scene"
 import WorldScene from "@engine/scenes/world_scene"
 import { World } from "@engine/world"
+import Character from '@engine/entities/character'
+import TileSet from "@engine/tile_set"
 
 let assets = [
   "maps/dungeon.map.json",
@@ -70,6 +72,21 @@ class PatdGame extends Engine {
 
         let scene = new WorldScene(this, this.world)
         this.scene = scene
+
+        let tileset = AssetLoader.get("dungeon_tileset") as TileSet
+        let badguyTile = tileset.getTileByName("badguy")
+
+        console.log(badguyTile)
+
+        console.log("badguyTile - ", badguyTile, badguyTile.sprite)
+
+
+        let badguy = new Character()
+        badguy.sprite = badguyTile.sprite
+        badguy.teleportTo(6, 6)
+
+        this.world.addEntity(badguy)
+
       })
   }
 }
