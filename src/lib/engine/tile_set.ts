@@ -1,4 +1,6 @@
 import { DEFAULT_TILE_SIZE } from "@engine/defaults"
+import Sprite from "@engine/sprite"
+import { encodedImageToCanvas } from "@engine/helpers"
 
 export interface TileArguments {
   x?: number,
@@ -9,12 +11,12 @@ export interface TileArguments {
 }
 
 export class Tile {
-  readonly image: ImageData
+  readonly sprite: Sprite
   readonly id: number
   public name: string
 
-  constructor(id: number, image: ImageData) {
-    this.image = image
+  constructor(id: number, sprite: Sprite) {
+    this.sprite = sprite
     this.id = id
   }
 }
@@ -28,18 +30,17 @@ export class TileSet {
   readonly tiles: Tile[]
   static readonly tileSize = DEFAULT_TILE_SIZE
 
-  static createTileSet(image: HTMLCanvasElement, tiles: TileArguments[], tileSize = DEFAULT_TILE_SIZE): TileSet {
-    //let imageData = await AssetLoader.imageDataFromInline64(tilesetImage)
+  static createTileSet(sprite: Sprite, tiles: TileArguments[], tileSize = DEFAULT_TILE_SIZE): TileSet {
     let tileset = new TileSet()
-    let columns = Math.ceil(image.width / tileSize)
+    let columns = Math.ceil(sprite.width / tileSize)
 
-    let images = TileSet.parse(image)
+    let sprites = TileSet.parse(sprite)
 
     for (var i = 0; i < tiles.length; i++) {
       let tileData = tiles[i]
       let tileIndex = tileData.y * columns + tileData.x
 
-      let tile = new Tile(tileData.id, images[tileIndex])
+      let tile = new Tile(tileData.id, sprites[tileIndex])
       tile.name = tileData.name
       tileset.tiles.push(tile)
     }
@@ -61,23 +62,25 @@ export class TileSet {
     return null
   }
 
-  private static parse(image: HTMLCanvasElement): ImageData[] {
-    let width = image.width
-    let height = image.height
+  private static parse(sprite: Sprite): Sprite[] {
+    let width = sprite.width
+    let height = sprite.height
 
     let canvas = document.createElement('canvas')
     let context = canvas.getContext('2d')
-    canvas.width = image.width
-    canvas.height = image.height
+    canvas.width = sprite.width
+    canvas.height = sprite.height
     context.clearRect(0, 0, width, height)
-    context.drawImage(image, 0, 0)
+    context.drawImage(sprite.image, 0, 0)
 
-    let tileImages = []
+    let tileImages: Sprite[] = []
 
     for (var y = 0; y < height; y += this.tileSize) {
       for (var x = 0; x < width; x += this.tileSize) {
         let tileImageData = context.getImageData(x, y, this.tileSize, this.tileSize)
-        tileImages.push(tileImageData)
+        let tileCanvas = encodedImageToCanvas(tileImageData)
+        let sprite = new Sprite(tileCanvas)
+        tileImages.push(sprite)
       }
     }
 

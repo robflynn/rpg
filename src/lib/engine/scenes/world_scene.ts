@@ -103,7 +103,7 @@ export class WorldScene extends Scene {
     let c2d = canvas.getContext('2d')
     canvas.width = this.tileSize
     canvas.height = this.tileSize
-    c2d.putImageData(tile.image, 0, 0)
+    c2d.drawImage(tile.sprite.image, 0, 0)
 
     //console.log(sx, sy)
     this.context.drawImage(canvas, sx, sy)
@@ -160,7 +160,7 @@ export class WorldScene extends Scene {
     let sx = x * this.tileSize
     let sy = y * this.tileSize
 
-    this.context.putImageData(tile.image, sx, sy)
+    this.context.drawImage(tile.sprite.image, sx, sy)
   }
 }
 

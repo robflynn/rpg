@@ -1,14 +1,15 @@
 import { Map, MapJSON } from "@engine/map"
 import TileSet from '@engine/tile_set'
 import { DEFAULT_TILE_SIZE } from '@engine/defaults'
+import Sprite from "@engine/sprite"
 
-interface OnLoadAble {
-  onload: any;
-  onerror: any;
-  onabort: any;
+interface OnLoadable {
+  onload: any
+  onerror: any
+  onabort: any
 }
 
-function onloadToPromiseWrapper<T extends OnLoadAble>(obj: T): Promise<T> {
+function onloadToPromiseWrapper<T extends OnLoadable>(obj: T): Promise<T> {
   return new Promise((resolve, reject) => {
     obj.onload = () => resolve(obj)
     obj.onerror = reject
@@ -49,7 +50,9 @@ export class Asset {
 export default class AssetLoader {
   private _assets = {}
 
-  addAsset(name: string, data: AssetData): Asset {
+  addAsset(name: string, data: Sprite): Asset
+  addAsset(name: string, data: MapJSON): Asset
+  addAsset<T>(name: string, data: T): Asset {
     let asset = new Asset()
     asset.name = name
     asset.data = data
@@ -73,7 +76,7 @@ export default class AssetLoader {
     image.src = URL.createObjectURL(blob)
     await imgPromise
 
-    return imageToCanvas(image)
+    return new Sprite(imageToCanvas(image))
   }
 
   async loadAsset(name: string) {
@@ -102,28 +105,6 @@ export default class AssetLoader {
     map.tiles = mapData.tiles
 
     return map
-  }
-
-  imageDataFromInline64(encodedImage: string): Promise<ImageData> {
-    return new Promise((resolve, reject) => {
-      let image = new Image()
-
-      image.onload = () => {
-        let canvas = document.createElement('canvas')
-        let context = canvas.getContext('2d')
-        canvas.width = image.width
-        canvas.height = image.height
-        context.drawImage(image, 0, 0)
-
-        resolve(context.getImageData(0, 0, image.width, image.height))
-      }
-
-      image.onerror = (err) => {
-        reject(err)
-      }
-
-      image.src = encodedImage
-    })
   }
 }
 
