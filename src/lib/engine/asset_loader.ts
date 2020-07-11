@@ -50,9 +50,12 @@ export class Asset {
 export default class AssetLoader {
   private _assets = {}
 
+  addAsset(name: string, data: TileSet): Asset
   addAsset(name: string, data: Sprite): Asset
   addAsset(name: string, data: MapJSON): Asset
   addAsset<T>(name: string, data: T): Asset {
+    if (this._assets.hasOwnProperty(name)) { return this.get(name) }
+
     let asset = new Asset()
     asset.name = name
     asset.data = data
@@ -99,7 +102,10 @@ export default class AssetLoader {
 
   async loadMapFromJSON(mapData: MapJSON) {
     let tilesetImageData = this.get(mapData.tileset.image)
+    let mapName = mapData.id
     let tileset = TileSet.createTileSet(tilesetImageData, mapData.tileset.tiles, mapData.tileSize || DEFAULT_TILE_SIZE)
+
+    this.addAsset(mapName, tileset)
 
     let map: Map = buildMap(mapData, { tileset })
     map.tiles = mapData.tiles
