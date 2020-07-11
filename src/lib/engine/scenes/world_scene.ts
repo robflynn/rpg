@@ -60,11 +60,15 @@ export class WorldScene extends Scene {
     if ((dx !=0) || (dy != 0)) {
       let accel = this.world.player.speed
 
-      console.log(accel)
       let vector = new Vec2(dx, dy).normalized.multiply(accel)
-      console.log(vector)
       let newPosition = this.world.player.position.add(vector)
 
+      // FIXME: This does not account for solid spaces to the west and
+      //        available space to the north with both keys pressed.
+      //
+      //        Do we prevent the entire diagnoal move or do we
+      //        let the character slide north against the wall?
+      //
       if (this.world.canBeOccupied(newPosition)) {
         this.world.player.position = newPosition
       }
