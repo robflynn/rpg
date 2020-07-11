@@ -1,5 +1,5 @@
 import Map from '@engine/map'
-import Player from "@engine/player"
+import Player from "@engine/entities/player"
 import Vec2 from '@engine/vec2'
 import Bounds from '@engine/bounds'
 import { DEFAULT_TILE_SIZE } from '@engine/defaults'
