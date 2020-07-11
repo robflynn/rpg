@@ -1,5 +1,7 @@
 import Vec2 from "@engine/vec2"
 import { Direction } from "@engine/world"
+import Bounds from '@engine/bounds'
+import { DEFAULT_TILE_SIZE } from '@engine/defaults'
 
 export enum PlayerState {
   idle,
@@ -13,6 +15,12 @@ export class Player {
   get direction(): Direction { return this._direction }
   set direction(direction: Direction) { this._direction = direction; }
   private _direction: Direction = Direction.east
+
+  get bounds(): Bounds {
+    // FIXME: GROSS
+    return new Bounds(this.position.x, this.position.y, DEFAULT_TILE_SIZE, DEFAULT_TILE_SIZE)
+  }
+
   private state: PlayerState = PlayerState.idle
 
   face(direction: Direction) {

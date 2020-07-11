@@ -84,9 +84,6 @@ export class WorldScene extends Scene {
         let wall = map.walls[index]
 
         if (!wall) { continue }
-
-        this.context.strokeStyle = 'orange'
-        this.context.strokeRect(x * map.tileSize, y * map.tileSize, map.tileSize, map.tileSize)
       }
     }
   }
