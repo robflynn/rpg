@@ -9,6 +9,8 @@ export enum State {
 }
 
 export class Character extends Entity {
+  name: string
+
   get state(): State { return this._state }
   set state(state: State) { let oldState = this._state; this._state = state; this.stateChanged(oldState, state) }
   protected _state: State = State.idle

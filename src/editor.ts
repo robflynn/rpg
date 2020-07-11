@@ -83,7 +83,10 @@ class PatdGame extends Engine {
 
         let badguy = new Character()
         badguy.sprite = badguyTile.sprite
+        badguy.name = 'Spoo-key Boi'
         badguy.teleportTo(6, 6)
+        badguy.onUpdate = (badguy, elapsedTime) => {
+        }
 
         this.world.addEntity(badguy)
 
