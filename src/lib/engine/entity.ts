@@ -10,7 +10,11 @@ export class Entity {
   set sprite(sprite: Sprite) { this._sprite = sprite; this.spriteChanged(); }
   protected _sprite?: Sprite
 
-  positionChanged() {}
+  onUpdate?: Function
+
+  update(elapsedTime: number) {
+    if (this.onUpdate) { this.onUpdate(this, elapsedTime) }
+  }
 
   // TODO: Temporary method.  Refactor.
   teleportTo(col: number, row: number) {
@@ -20,7 +24,8 @@ export class Entity {
     this.position = new Vec2(xpos, ypos)
   }
 
-  spriteChanged() { console.log('a sprite was changed') }
+  positionChanged() {}
+  spriteChanged() {}
 }
 
 export default Entity

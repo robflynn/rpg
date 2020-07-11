@@ -30,8 +30,17 @@ export class WorldScene extends Scene {
     this.handleControllerInput()
 
     this.world.player.update(elapsedTime)
+    this.updateEntities(elapsedTime)
 
     super.update(elapsedTime)
+  }
+
+  private updateEntities(elapsedTime: number) {
+    for (var i = 0; i < this.world.entities.length; i++) {
+      let entity = this.world.entities[i]
+
+      entity.update(elapsedTime)
+    }
   }
 
   private handleControllerInput() {

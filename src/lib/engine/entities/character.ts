@@ -22,17 +22,13 @@ export class Character extends Entity {
     return new Bounds(this.position.x, this.position.y, DEFAULT_TILE_SIZE, DEFAULT_TILE_SIZE)
   }
 
-  public onUpdate?: Function
+  readonly heartbeat: number = 0.250
 
   face(direction: Direction) {
     this.direction = direction
   }
 
   stateChanged(from: State, to: State) {}
-
-  update(elapsedTime: number) {
-    if (this.onUpdate) { this.onUpdate(this, elapsedTime) }
-  }
 }
 
 export default Character
