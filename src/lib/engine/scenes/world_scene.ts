@@ -62,6 +62,7 @@ export class WorldScene extends Scene {
 
       let vector = new Vec2(dx, dy).multiply(accel).normalized
       let newPosition = this.world.player.position.add(vector)
+
       if (this.world.canBeOccupied(newPosition)) {
         this.world.player.position = newPosition
       }
@@ -70,7 +71,24 @@ export class WorldScene extends Scene {
 
   render() {
     this.renderMap()
+    this.renderWalls()
     this.renderPlayer()
+  }
+
+  renderWalls() {
+    let map = this.world.map
+
+    for (var y = 0; y < map.height; y++) {
+      for (var x = 0; x < map.width; x++) {
+        let index = (y * map.width) + x
+        let wall = map.walls[index]
+
+        if (!wall) { continue }
+
+        this.context.strokeStyle = 'orange'
+        this.context.strokeRect(x * map.tileSize, y * map.tileSize, map.tileSize, map.tileSize)
+      }
+    }
   }
 
   private renderPlayer() {

@@ -33,6 +33,7 @@ const buildMap = (mapData, { tileset }) => {
 
   // TODO: Why did I do it this way?
   map.tileset = tileset
+  map.walls = mapData.walls
 
   return map
 }
