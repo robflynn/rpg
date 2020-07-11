@@ -11,15 +11,13 @@ let baseConfig = {
 }
 
 let aliases = {
-  '@patd': resolve('./src/lib/patd'),
   '@data': resolve('./data'),
-  "@editor": resolve("./src/lib/patd/editor"),
   "@engine": resolve("./src/lib/engine")
 }
 
 let gameBundle = Object.assign({}, baseConfig, {
   name: 'game',
-  entry: './src/main.ts',
+  entry: './src/editor.ts',
   resolve: {
     extensions: ['.ts', '.tsx', '.js'],
     alias: {
@@ -116,5 +114,5 @@ let editorBundle = Object.assign({}, baseConfig, {
 
 module.exports = [
   gameBundle,
-  editorBundle
+//  editorBundle
 ]

@@ -58,9 +58,11 @@ export class WorldScene extends Scene {
     }
 
     if ((dx !=0) || (dy != 0)) {
-      let accel = 2
+      let accel = this.world.player.speed
 
-      let vector = new Vec2(dx, dy).multiply(accel).normalized
+      console.log(accel)
+      let vector = new Vec2(dx, dy).normalized.multiply(accel)
+      console.log(vector)
       let newPosition = this.world.player.position.add(vector)
 
       if (this.world.canBeOccupied(newPosition)) {

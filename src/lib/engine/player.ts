@@ -12,6 +12,8 @@ export class Player {
   velocity: Vec2 = new Vec2(0, 0)
   position: Vec2 = Vec2.zero
 
+  readonly speed: number = 4
+
   get direction(): Direction { return this._direction }
   set direction(direction: Direction) { this._direction = direction; }
   private _direction: Direction = Direction.east
