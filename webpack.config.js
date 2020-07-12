@@ -43,6 +43,14 @@ let gameBundle = Object.assign({}, baseConfig, {
   plugins: [
     new HtmlWebpackPlugin({
       template: './src/templates/index.html'
+    }),
+
+    new CopyWebpackPlugin({
+      patterns: [
+        { from: 'data/maps', to: 'data/maps' },
+        { from: 'data/sprites', to: 'data/sprites' },
+        { from: 'data/music', to: 'data/music' },
+      ]
     })
   ]
 })
