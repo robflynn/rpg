@@ -1,6 +1,6 @@
 import { DEFAULT_TILE_SIZE } from "@engine/defaults"
 import Sprite from "@engine/sprite"
-import { encodedImageToCanvas } from "@engine/helpers"
+import { imageDataToCanvas } from "@engine/helpers"
 
 export interface TileArguments {
   x?: number,
@@ -78,7 +78,7 @@ export class TileSet {
     for (var y = 0; y < height; y += this.tileSize) {
       for (var x = 0; x < width; x += this.tileSize) {
         let tileImageData = context.getImageData(x, y, this.tileSize, this.tileSize)
-        let tileCanvas = encodedImageToCanvas(tileImageData)
+        let tileCanvas = imageDataToCanvas(tileImageData)
         let sprite = new Sprite(tileCanvas)
         tileImages.push(sprite)
       }

@@ -8,10 +8,11 @@ import WorldScene from "@engine/scenes/world_scene"
 import { World } from "@engine/world"
 import Character from '@engine/entities/character'
 import TileSet from "@engine/tile_set"
+import Map from "@engine/map"
 
 let assets = [
+  "sprites/dungeon_tiles.png",
   "maps/dungeon.map.json",
-  "sprites/dungeon_tiles.png"
 ]
 
 let pendingAssets = Object.keys(assets).length
@@ -47,6 +48,9 @@ class PatdGame extends Engine {
     Promise.all(assets.map(asset => this.loadAsset(asset)))
       .then(() => {
         this.initializeGame()
+
+        let mapJSON = AssetLoader.get("maps/dungeon.map.json")
+        console.log(mapJSON)
       })
   }
 
@@ -64,33 +68,11 @@ class PatdGame extends Engine {
   }
 
   private async initializeGame() {
-    let mapJSON = AssetLoader.get("maps/dungeon.map.json")
+    let map = AssetLoader.get('maps/dungeon.map.json')
+    this.world.map = map
 
-    AssetLoader.loadMapFromJSON(mapJSON)
-      .then(map => {
-        this.world.map = map
-
-        let scene = new WorldScene(this, this.world)
-        this.scene = scene
-
-        let tileset = AssetLoader.get("dungeon_tileset") as TileSet
-        let badguyTile = tileset.getTileByName("badguy")
-
-        console.log(badguyTile)
-
-        console.log("badguyTile - ", badguyTile, badguyTile.sprite)
-
-
-        let badguy = new Character()
-        badguy.sprite = badguyTile.sprite
-        badguy.name = 'Spoo-key Boi'
-        badguy.teleportTo(6, 6)
-        badguy.onUpdate = (badguy, elapsedTime) => {
-        }
-
-        this.world.addEntity(badguy)
-
-      })
+    let scene = new WorldScene(this, this.world)
+    this.scene = scene
   }
 }
 

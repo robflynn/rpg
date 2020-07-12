@@ -1,16 +1,6 @@
 import { DEFAULT_TILE_SIZE } from '@engine/defaults'
 import TileSet from '@engine/tile_set'
 
-export interface MapJSON {
-  id: string,
-  tileSize: number,
-  width: number,
-  height: number,
-  tiles: number[],
-  walls: number[],
-  tileset: any
-}
-
 type TileMap = number
 
 export class Map {
