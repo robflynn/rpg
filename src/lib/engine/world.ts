@@ -55,6 +55,7 @@ export class World {
   protected _entities: Entity[] = []
 
   player: Player
+  onMapChange?: Function
 
   constructor({ map }: WorldArguments = {}) {
     if (map) { this.map = map }
@@ -73,6 +74,10 @@ export class World {
 
   private mapChanged() {
     this.findWalls()
+
+    if (this.onMapChange) {
+      this.onMapChange(this.map)
+    }
   }
 
   private findWalls() {

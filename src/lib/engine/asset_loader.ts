@@ -5,6 +5,7 @@ import Sprite from "@engine/sprite"
 import JSONLoader from "@engine/loaders/json_loader"
 import URLLoader from "@engine/loaders/url_loader"
 import PNGLoader from "@engine/loaders/png_loader"
+import MP3Loader from "@engine/loaders/mp3_loader"
 import { MapJSON, MapLoader } from "@engine/loaders/map_loader"
 import Loader from "@engine/loader"
 
@@ -109,6 +110,8 @@ export default class AssetLoader {
 
     let asset = this.addAsset(name, prevResponse)
 
+    console.log(asset)
+
     return asset
   }
 }
@@ -117,4 +120,5 @@ export const global = new AssetLoader()
 global.addLoader(new URLLoader())
 global.addLoader(new JSONLoader())
 global.addLoader(new PNGLoader())
+global.addLoader(new MP3Loader())
 global.addLoader(new MapLoader())

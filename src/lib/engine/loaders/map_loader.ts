@@ -12,7 +12,8 @@ export interface MapJSON {
   height: number,
   tiles: number[],
   walls: number[],
-  tileset: any
+  tileset: any,
+  music: string
 }
 
 export class MapLoader extends Loader<MapJSON> {
@@ -26,6 +27,7 @@ export class MapLoader extends Loader<MapJSON> {
     let map: Map = this.buildMap(mapJSON, { tileset })
 
     map.tiles = mapJSON.tiles
+    map.music = mapJSON.music
 
     return map
   }

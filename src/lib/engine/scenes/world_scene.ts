@@ -6,6 +6,7 @@ import { World, Direction } from '@engine/world'
 import Controller from '@engine/controller'
 import { Vec2 } from '@engine/vec2'
 import Entity from "@engine/entity"
+import { Asset } from '@engine/asset_loader'
 
 export class WorldScene extends Scene {
   readonly world: World
@@ -24,6 +25,17 @@ export class WorldScene extends Scene {
     super(engine, engine.width, engine.height)
 
     this.world = world
+
+    if (this.world.map.music) {
+      this.playMusic(this.world.map.music)
+    }
+  }
+
+  playMusic(musicName) {
+    let a = document.createElement("audio")
+    a.src = "data/" + musicName
+    document.querySelector('body').appendChild(a)
+    setTimeout(() => { a.play() }, 1000)
   }
 
   update(elapsedTime) {

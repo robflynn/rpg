@@ -11,6 +11,7 @@ export class Map {
   public tiles: TileMap[]
   public walls: number[] = []
   public tileset: TileSet
+  public music: string
 
   constructor(width: number, height: number, tileSize: number = DEFAULT_TILE_SIZE, tiles: TileMap[] = []) {
     this.width = width
