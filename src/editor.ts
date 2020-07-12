@@ -1,8 +1,6 @@
 import Engine from "@engine/engine"
 import { global as AssetLoader } from "@engine/asset_loader"
 
-const DungeonMap = require("@data/maps/dungeon.map.json")
-
 import Scene from "@engine/scene"
 import WorldScene from "@engine/scenes/world_scene"
 import { World } from "@engine/world"
