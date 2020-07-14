@@ -45,7 +45,7 @@ class PatdGame extends Engine {
   async loadAssets() {
     for (var i = 0; i < assets.length; i++) {
       let assetName = assets[i]
-      let asset = await this.loadAsset(assetName)
+      let asset = await this.loadAsset(assetName).catch((err) => { console.log("some kind of err? ", err)} )
     }
 
     this.initializeGame()
