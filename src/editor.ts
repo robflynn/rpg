@@ -10,7 +10,6 @@ import Map from "@engine/map"
 
 let assets = [
   "sprites/dungeon_tiles.png",
-  "music/lost_mines.mp3",
   "maps/dungeon.map.json",
 ]
 
@@ -50,8 +49,6 @@ class PatdGame extends Engine {
     }
 
     this.initializeGame()
-    let mapJSON = AssetManager.get("maps/dungeon.map.json")
-    console.log(mapJSON)
   }
 
   async loadAsset(asset: string) {
