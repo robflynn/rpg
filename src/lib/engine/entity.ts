@@ -1,5 +1,6 @@
 import Vec2 from "@engine/vec2"
 import Sprite from "@engine/sprite"
+import World from "@engine/world"
 
 export class Entity {
   get position(): Vec2 { return this._position }
@@ -11,6 +12,7 @@ export class Entity {
   protected _sprite?: Sprite
 
   onUpdate?: Function
+  world: World
 
   update(elapsedTime: number) {
     if (this.onUpdate) { this.onUpdate(this, elapsedTime) }

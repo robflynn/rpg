@@ -81,6 +81,14 @@ class PatdGame extends Engine {
     spookyboi.position.x = 250
     spookyboi.position.y = 50
     spookyboi.sprite = sprite
+    spookyboi.onUpdate = (elapsedTime) => {
+      let player = this.world.player
+      let heading = player.position.subtract(spookyboi.position)
+      let distance = Math.sqrt((heading.y * heading.y) + (heading.x * heading.x))
+      let direction = heading.divide(distance)
+      console.log(direction)
+      spookyboi.velocity = direction
+    }
 
     this.world.addEntity(spookyboi)
   }

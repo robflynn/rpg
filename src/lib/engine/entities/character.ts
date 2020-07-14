@@ -2,6 +2,7 @@ import Entity from '@engine/entity'
 import { Direction } from '@engine/world'
 import Bounds from '@engine/bounds'
 import { DEFAULT_TILE_SIZE } from '@engine/defaults'
+import Vec2 from '@engine/vec2'
 
 export enum State {
   idle,
@@ -10,6 +11,8 @@ export enum State {
 
 export class Character extends Entity {
   name: string
+
+  velocity: Vec2 = Vec2.zero
 
   get state(): State { return this._state }
   set state(state: State) { let oldState = this._state; this._state = state; this.stateChanged(oldState, state) }

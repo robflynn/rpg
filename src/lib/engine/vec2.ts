@@ -31,6 +31,16 @@ export class Vec2 {
     return new Vec2(this.x + rightValue.x, this.y + rightValue.y)
   }
 
+  subtract(rightValue: number): Vec2
+  subtract(rightValue: Vec2): Vec2
+  subtract<T>(rightValue: number | Vec2): Vec2 {
+    if (typeof rightValue === "number") {
+      return new Vec2(this.x - rightValue, this.y - rightValue)
+    }
+
+    return new Vec2(this.x - rightValue.x, this.y - rightValue.y)
+  }
+
   multiply(multiplier: number): Vec2
   multiply(multiplier: Vec2): Vec2
   multiply<T>(multiplier: number | Vec2): Vec2 {
@@ -39,6 +49,16 @@ export class Vec2 {
     }
 
     return new Vec2(multiplier.x * this.x, multiplier.y * this.y)
+  }
+
+  divide(divisor: number): Vec2
+  divide(divisor: Vec2): Vec2
+  divide<T>(divisor: number | Vec2): Vec2 {
+    if (typeof divisor === "number") {
+      return new Vec2(this.x / divisor, this.y / divisor)
+    }
+
+    return new Vec2(this.x / divisor.x, this.y / divisor.y)
   }
 }
 

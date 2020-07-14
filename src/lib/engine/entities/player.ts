@@ -6,7 +6,6 @@ import { DEFAULT_TILE_SIZE } from '@engine/defaults'
 
 export class Player extends Character {
   readonly speed: number = 1.85
-  velocity: Vec2 = Vec2.zero
 
   update(elapsedTime: number) {
     if ((Math.abs(this.velocity.x) > 0) || (Math.abs(this.velocity.y) > 0)) {
