@@ -35,6 +35,7 @@ export class WorldScene extends Scene {
     let a = document.createElement("audio")
     a.src = "data/" + musicName
     a.loop = true
+    a.volume = 0.05
     document.querySelector('body').appendChild(a)
     setTimeout(() => { a.play() }, 1000)
   }

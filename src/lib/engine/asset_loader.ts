@@ -46,6 +46,10 @@ export default class AssetLoader {
   private _assets = {}
   private _loaders = {}
 
+  get assetNames(): string[] {
+    return Object.keys(this._assets)
+  }
+
   addLoader(loader: Loader) {
     console.log(`adding loader: ${loader.type}`)
     this._loaders[loader.type] = loader

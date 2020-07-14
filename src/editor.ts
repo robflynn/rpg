@@ -1,5 +1,5 @@
 import Engine from "@engine/engine"
-import { global as AssetLoader } from "@engine/asset_loader"
+import { global as AssetManager } from "@engine/asset_loader"
 
 import Scene from "@engine/scene"
 import WorldScene from "@engine/scenes/world_scene"
@@ -50,14 +50,14 @@ class PatdGame extends Engine {
     }
 
     this.initializeGame()
-    let mapJSON = AssetLoader.get("maps/dungeon.map.json")
+    let mapJSON = AssetManager.get("maps/dungeon.map.json")
     console.log(mapJSON)
   }
 
   async loadAsset(asset: string) {
     let name = asset
 
-    return AssetLoader.loadAsset(name)
+    return AssetManager.loadAsset(name)
   }
 
   onUpdate(time) {
@@ -68,11 +68,21 @@ class PatdGame extends Engine {
   }
 
   private async initializeGame() {
-    let map = AssetLoader.get('maps/dungeon.map.json')
+    let map = AssetManager.get('maps/dungeon.map.json') as Map
     this.world.map = map
 
     let scene = new WorldScene(this, this.world)
     this.scene = scene
+
+    let tileset = map.tileset
+    let sprite = tileset.getTileByName("badguy").sprite
+
+    let spookyboi = new Character()
+    spookyboi.position.x = 250
+    spookyboi.position.y = 50
+    spookyboi.sprite = sprite
+
+    this.world.addEntity(spookyboi)
   }
 }
 
