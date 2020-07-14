@@ -7,6 +7,7 @@ export default class JSONLoader extends Loader<string> {
   }
 
   async load(name: string, data: any) {
+    console.log("What format do we have here? Another debug test?", name, data)
     let text = await (data as Blob).text()
     let json = JSON.parse(text)
 
