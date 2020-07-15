@@ -3,6 +3,7 @@ import { global as AssetManager } from "@engine/asset_loader"
 
 import Scene from "@engine/scene"
 import WorldScene from "@engine/scenes/world_scene"
+import GLWorldScene from "@engine/scenes/gl_world_scene"
 import { World } from "@engine/world"
 import Character from '@engine/entities/character'
 import TileSet from "@engine/tile_set"
@@ -68,7 +69,7 @@ class PatdGame extends Engine {
     let map = AssetManager.get('maps/dungeon.map.json') as Map
     this.world.map = map
 
-    let scene = new WorldScene(this, this.world)
+    let scene = new GLWorldScene(this, this.world)
     this.scene = scene
 
     let tileset = map.tileset
