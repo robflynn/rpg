@@ -131,20 +131,23 @@ class PatdGame extends Engine {
 
     this.world.addEntity(spookyboi)
 
-    let torch = new Character()
-    torch.sprite = tileset.getTileByName('torch').sprite
-    torch.position.x = 15
-    torch.position.y = -15
+    for (var i = 0; i < 9; i++) {
+      let torch = new Character()
+      torch.sprite = tileset.getTileByName('torch').sprite
+      torch.position.x = 32 + (i * 32)
+      torch.position.y = -15
+      torch.glowing = true
 
-    this.world.addEntity(torch)
+      this.world.addEntity(torch)
 
-    ease({
-      startValue: -15,
-      endValue: 15,
-      durationMs: 250,
-      onStep: (y) => { torch.position.y = y },
-      onComplete: () => { console.log('done easing') }
-    })
+      ease({
+        startValue: -15,
+        endValue: 0,
+        durationMs: 250,
+        onStep: (y) => { torch.position.y = y },
+        onComplete: () => { console.log('done easing') }
+      })
+    }
 
 
 

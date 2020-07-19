@@ -133,6 +133,33 @@ export class WorldScene extends Scene {
   private renderEntity(entity: Entity) {
     if (entity.sprite) {
       this.context.drawImage(entity.sprite.image, entity.position.x, entity.position.y)
+
+      if (entity.glowing) {
+
+        let cw = this.canvas.width
+        let ch = this.canvas.height
+        let c = this.context
+        c.save()
+
+        let cx = entity.position.x + 8
+        let cy = entity.position.y + 6
+        let r = 8
+
+        c.globalCompositeOperation = 'lighter';
+        var rnd = 0.05 * Math.sin(3.1 * Date.now() / 1000);
+        let grad = c.createRadialGradient(cx, cy, 0, cx, cy, r)
+        let alpha = 0.7
+        grad.addColorStop(0.0, `rgba(187, 187, 153, ${alpha})`)
+        grad.addColorStop(0.2 + rnd, `rgba(170, 170, 136, ${alpha})`)
+        grad.addColorStop(0.7 + rnd, `rgba(102, 51, 0, ${alpha})`)
+        grad.addColorStop(0.9, `rgba(17, 17, 0, ${alpha})`)
+        grad.addColorStop(1.0, '#000')
+        c.fillStyle = grad
+        c.beginPath
+        c.arc(cx, cy, r, 0, 2 * Math.PI)
+        c.fill()
+        c.restore()
+      }
     }
   }
 

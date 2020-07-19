@@ -14,6 +14,8 @@ export class Entity {
   onUpdate?: Function
   world: World
 
+  glowing: boolean = false
+
   update(elapsedTime: number) {
     if (this.onUpdate) { this.onUpdate(this, elapsedTime) }
   }
