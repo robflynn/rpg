@@ -7,6 +7,48 @@ import { World } from "@engine/world"
 import Character from '@engine/entities/character'
 import TileSet from "@engine/tile_set"
 import Map from "@engine/map"
+import * as ease from 'easy-ease'
+
+
+/*
+function easeInOutQuad(t, b, c, d) {
+  if ((t /= d / 2) < 1) return c / 2 * t * t + b;
+  return -c / 2 * ((--t) * (t - 2) - 1) + b;
+}
+
+function easeOutQuad(t, b, c, d) {
+  return -c * (t /= d) * (t - 2) + b;
+}
+
+function easeInQuad(t, b, c, d) {
+  return c * (t /= d) * t + b;
+}
+
+let time = 0
+let diff = 30
+let minTime = 0
+let maxTime = 150
+
+for (var i = 0, len = diff; i <= len; i++) {
+  (function(s) {
+    setTimeout(function() {
+      torch.position.y += 1
+    }, time);
+  })(i);
+
+  time = easeInQuad(i, minTime, maxTime, diff);
+  console.log(time);
+}
+*/
+
+/*
+class Tween {
+  static to(object, duration, from, to) {
+    let time = 0
+
+  }
+}
+*/
 
 let assets = [
   "sprites/dungeon_tiles.png",
@@ -83,11 +125,48 @@ class PatdGame extends Engine {
       let heading = player.position.subtract(spookyboi.position)
       let distance = Math.sqrt((heading.y * heading.y) + (heading.x * heading.x))
       let direction = heading.divide(distance)
-      console.log(direction)
+      //console.log(direction)
       spookyboi.velocity = direction
     }
 
     this.world.addEntity(spookyboi)
+
+    let torch = new Character()
+    torch.sprite = tileset.getTileByName('torch').sprite
+    torch.position.x = 15
+    torch.position.y = -15
+
+    this.world.addEntity(torch)
+
+    ease({
+      startValue: -15,
+      endValue: 15,
+      durationMs: 250,
+      onStep: (y) => { torch.position.y = y },
+      onComplete: () => { console.log('done easing') }
+    })
+
+
+
+/*
+    let time = 0
+    let diff = 30
+    let minTime = 0
+    let maxTime = 150
+
+    for (var i = 0, len = diff; i <= len; i++) {
+      (function(s) {
+        setTimeout(function() {
+          torch.position.y += 1
+        }, time);
+      })(i);
+
+      time = easeInQuad(i, minTime, maxTime, diff);
+      console.log(time);
+    }
+    */
+
+
   }
 }
 

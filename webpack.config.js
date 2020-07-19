@@ -12,7 +12,7 @@ let baseConfig = {
 
 let aliases = {
   '@data': resolve('./data'),
-  "@engine": resolve("./src/lib/engine")
+  "@engine": resolve("./src/lib/engine"),
 }
 
 let gameBundle = Object.assign({}, baseConfig, {

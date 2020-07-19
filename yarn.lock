@@ -2182,6 +2182,11 @@ duplexify@^3.4.2, duplexify@^3.6.0:
     readable-stream "^2.0.0"
     stream-shift "^1.0.0"
 
+easy-ease@^1.0.9:
+  version "1.0.9"
+  resolved "https://registry.yarnpkg.com/easy-ease/-/easy-ease-1.0.9.tgz#b30a76d6df4456dc1af161f81beed2a5cf7e348c"
+  integrity sha512-6urP1sGYAtb9It7ujwgtKcFkBdQS51q1pbSahxnRcmI438Hco10bgqopT2XZkBy/FNqBamxLU3S9PRu13IeSjQ==
+
 ee-first@1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/ee-first/-/ee-first-1.1.1.tgz#590c61156b0ae2f4f0255732a158b266bc56b21d"

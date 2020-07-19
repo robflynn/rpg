@@ -33,6 +33,7 @@
     "webpack-cli": "^3.3.12"
   },
   "dependencies": {
+    "easy-ease": "^1.0.9",
     "express": "^4.17.1",
     "resize-image-data": "^0.3.0",
     "throttle-debounce": "^2.2.1",
