@@ -3,6 +3,7 @@ import Scene from "@engine/scene"
 import World, { Direction } from "@engine/world"
 import Controller from "@engine/controller"
 import Vec2 from "@engine/vec2"
+import { DEFAULT_FPS } from '@engine/defaults'
 
 export enum EngineState {
   notStarted = "EngineState.notStarted",
@@ -10,11 +11,19 @@ export enum EngineState {
   paused     = "EngineState.paused",
 }
 
-export interface EngineOptions {}
+export interface EngineOptions {
+  fps?: number
+}
 
 export default class Engine {
   readonly width: number
   readonly height: number
+
+  private accumulatedTime:number = 0
+  private animationFrameHandle: number
+  private time: number = 0
+  private fps: number
+  private updated: boolean = false
 
   get state(): EngineState {
     return this._state
@@ -43,10 +52,12 @@ export default class Engine {
   private element: HTMLElement
   private _state: EngineState = EngineState.notStarted
 
-  constructor(selector: string, width: number, height: number, { }: EngineOptions = {}) {
+  constructor(selector: string, width: number, height: number, options: EngineOptions = {}) {
     this.width = width
     this.height = height
     this.selector = selector
+
+    this.fps = options.fps || DEFAULT_FPS
 
     this.world = new World()
     this.controller = new Controller()
@@ -66,9 +77,16 @@ export default class Engine {
     this.onStart()
   }
 
+  stop() {
+    this.state = EngineState.paused
+
+    window.cancelAnimationFrame(this.animationFrameHandle)
+  }
+
   redraw() {
-    this.context.resetTransform()
-    this.context.clearRect(0, 0, this.canvas.width, this.canvas.height)
+    this.context.save()
+    this.context.setTransform(1, 0, 0, 1, 0, 0)
+    this.context.restore()
 
     this.render()
   }
@@ -91,23 +109,44 @@ export default class Engine {
     this._state = EngineState.started
 
     // Begin the update loop
-    this.update(0)
+    this.animationFrameHandle = window.requestAnimationFrame(this.update.bind(this))
   }
 
-  private update(elapsedTime) {
-    if (this.scene) {
-      this.scene.update(elapsedTime)
+  private update(timestamp: number) {
+    this.accumulatedTime += timestamp - this.time
+    this.time = timestamp
+/*
+    // 20 fps floor
+    if (this.accumulatedTime >= this.fps * 6) {
+      this.accumulatedTime = this.fps
+    }
+    */
+
+
+    while (this.accumulatedTime >= this.fps) {
+      this.accumulatedTime -= this.fps
+
+      if (this.scene) {
+        this.scene.update(timestamp)
+      }
+
+      this.onUpdate(timestamp)
+
+      this.updated = true
     }
 
-    this.redraw()
-    this.onUpdate(elapsedTime)
+    if (this.updated) {
+      this.render()
 
-    window.requestAnimationFrame(this.update.bind(this))
+      this.updated = false
+    }
+
+    this.animationFrameHandle = window.requestAnimationFrame(this.update.bind(this))
   }
 
   private render() {
     if (this.scene) {
-      this.context.drawImage(this.scene.buffer, 0, 0, this.scene.buffer.width * 3, this.scene.buffer.height * 3)
+      this.context.drawImage(this.scene.buffer, 0, 0, this.scene.buffer.width * 4, this.scene.buffer.height * 4)
     }
   }
 

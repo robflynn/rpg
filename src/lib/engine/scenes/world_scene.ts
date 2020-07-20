@@ -54,7 +54,7 @@ export class WorldScene extends Scene {
       let entity = this.world.entities[i]
 
       entity.update(elapsedTime)
-      entity.position = entity.position.add(entity.velocity)
+      entity.position = entity.position.add(entity.velocity.multiply(2))
     }
   }
 

@@ -114,11 +114,12 @@ class PatdGame extends Engine {
     this.scene = scene
 
     let tileset = map.tileset
-    let sprite = tileset.getTileByName("badguy").sprite
+    let sprite = tileset.getTileByName("torch").sprite
 
     let spookyboi = new Character()
     spookyboi.position.x = 250
     spookyboi.position.y = 50
+    spookyboi.glowing = false
     spookyboi.sprite = sprite
     spookyboi.onUpdate = (elapsedTime) => {
       let player = this.world.player
@@ -136,7 +137,7 @@ class PatdGame extends Engine {
       torch.sprite = tileset.getTileByName('torch').sprite
       torch.position.x = 32 + (i * 32)
       torch.position.y = -15
-      torch.glowing = true
+      torch.glowing = false
 
       this.world.addEntity(torch)
 
@@ -148,6 +149,19 @@ class PatdGame extends Engine {
         onComplete: () => { console.log('done easing') }
       })
     }
+
+    let candle = new Character()
+    candle.sprite = tileset.getTileByName('candle').sprite
+    candle.position.x = 16 * 1
+    candle.position.y = 16 * 8
+    this.world.addEntity(candle)
+
+    let candle2 = new Character()
+    candle2.sprite = tileset.getTileByName('candle').sprite
+    candle2.position.x = 16 * 18
+    candle2.position.y = 16 * 8
+    this.world.addEntity(candle2)
+
 
 
 
@@ -173,5 +187,5 @@ class PatdGame extends Engine {
   }
 }
 
-let engine = new PatdGame("#editor", 16 * 32 * 2, 16 * 32 * 2)
+let engine = new PatdGame("#editor", 16 * 32 * 4, 16 * 32 * 4)
 engine.start()
