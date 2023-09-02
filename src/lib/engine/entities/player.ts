@@ -1,5 +1,8 @@
+import Vec2 from "@engine/vec2"
 import { Direction } from "@engine/world"
+import Bounds from '@engine/bounds'
 import { Character, State } from "@engine/entities/character"
+import { DEFAULT_TILE_SIZE } from '@engine/defaults'
 
 export class Player extends Character {
   readonly speed: number = 100
