@@ -22,7 +22,11 @@ export default class Engine {
   private accumulatedTime:number = 0
   private animationFrameHandle: number
   private time: number = 0
+  private targetFPS: number
   private fps: number
+  private fpsTime: number
+  private frameCount: number
+
   private updated: boolean = false
 
   get state(): EngineState {
@@ -57,7 +61,11 @@ export default class Engine {
     this.height = height
     this.selector = selector
 
-    this.fps = options.fps || DEFAULT_FPS
+    this.targetFPS = options.fps || DEFAULT_FPS
+    this.fpsTime = 0
+    this.frameCount = 0
+    this.fps = 0
+
 
     this.world = new World()
     this.controller = new Controller()
@@ -113,31 +121,32 @@ export default class Engine {
   }
 
   private update(timestamp: number) {
-    this.accumulatedTime += timestamp - this.time
+    const elapsedTime = timestamp - this.time
     this.time = timestamp
-/*
-    // 20 fps floor
-    if (this.accumulatedTime >= this.fps * 6) {
-      this.accumulatedTime = this.fps
-    }
-    */
+    this.accumulatedTime += elapsedTime
+    this.fpsTime += elapsedTime
+    this.frameCount++
+    const timePerFrame = 1000 / this.targetFPS
 
-
-    while (this.accumulatedTime >= this.fps) {
-      this.accumulatedTime -= this.fps
+    while (this.accumulatedTime >= timePerFrame) {
+      this.accumulatedTime -= timePerFrame
 
       if (this.scene) {
-        this.scene.update(timestamp)
+        this.scene.update(timePerFrame)
       }
 
-      this.onUpdate(timestamp)
-
+      this.onUpdate(timePerFrame)
       this.updated = true
+    }
+
+    if (this.fpsTime >= 1000) {
+      this.fps = this.frameCount
+      this.frameCount = 0
+      this.fpsTime = 0
     }
 
     if (this.updated) {
       this.render()
-
       this.updated = false
     }
 
@@ -147,6 +156,10 @@ export default class Engine {
   private render() {
     if (this.scene) {
       this.context.drawImage(this.scene.buffer, 0, 0, this.scene.buffer.width * 4, this.scene.buffer.height * 4)
+
+      this.context.fillStyle = 'white'
+      this.context.font = '12px monospace'
+      this.context.fillText(`FPS: ${this.fps}`, 10, 10)
     }
   }
 

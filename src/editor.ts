@@ -130,7 +130,7 @@ class PatdGame extends Engine {
       spookyboi.velocity = direction
     }
 
-    this.world.addEntity(spookyboi)
+    // this.world.addEntity(spookyboi)
 
     for (var i = 0; i < 9; i++) {
       let torch = new Character()

@@ -5,7 +5,7 @@ import { Character, State } from "@engine/entities/character"
 import { DEFAULT_TILE_SIZE } from '@engine/defaults'
 
 export class Player extends Character {
-  readonly speed: number = 1.85
+  readonly speed: number = 100
 
   update(elapsedTime: number) {
     if ((Math.abs(this.velocity.x) > 0) || (Math.abs(this.velocity.y) > 0)) {

@@ -41,7 +41,7 @@ export class WorldScene extends Scene {
   }
 
   update(elapsedTime) {
-    this.handleControllerInput()
+    this.handleControllerInput(elapsedTime)
 
     this.world.player.update(elapsedTime)
     this.updateEntities(elapsedTime)
@@ -58,7 +58,7 @@ export class WorldScene extends Scene {
     }
   }
 
-  private handleControllerInput() {
+  private handleControllerInput(deltaTime: number ) {
     let dx = 0
     let dy = 0
 
@@ -83,7 +83,7 @@ export class WorldScene extends Scene {
     }
 
     if ((dx !=0) || (dy != 0)) {
-      let accel = this.world.player.speed
+      let accel = this.world.player.speed * (deltaTime / 1000)
 
       let vector = new Vec2(dx, dy).normalized.multiply(accel)
       let newPosition = this.world.player.position.add(vector)

@@ -1,5 +1,5 @@
 const DEFAULT_TILE_SIZE = 16
-const DEFAULT_FPS = 60
+const DEFAULT_FPS = 166
 
 export {
   DEFAULT_TILE_SIZE,
