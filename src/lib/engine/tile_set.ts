@@ -13,7 +13,7 @@ export interface TileArguments {
 export class Tile {
   readonly sprite: Sprite
   readonly id: number
-  public name: string
+  public name?: string
 
   constructor(id: number, sprite: Sprite) {
     this.sprite = sprite
@@ -38,6 +38,9 @@ export class TileSet {
 
     for (var i = 0; i < tiles.length; i++) {
       let tileData = tiles[i]
+
+      if (!tileData.x || !tileData.y) { throw new Error("Tile data must include x and y coordinates") }
+
       let tileIndex = tileData.y * columns + tileData.x
 
       let tile = new Tile(tileData.id, sprites[tileIndex])
@@ -68,6 +71,9 @@ export class TileSet {
 
     let canvas = document.createElement('canvas')
     let context = canvas.getContext('2d')
+
+    if (!context) { throw new Error("Could not get context") }
+
     canvas.width = sprite.width
     canvas.height = sprite.height
     context.clearRect(0, 0, width, height)

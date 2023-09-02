@@ -1,4 +1,4 @@
-import Engine from "@engine/engine"
+import Engine, { EngineState } from "@engine/engine"
 import { global as AssetManager } from "@engine/asset_loader"
 
 import Scene from "@engine/scene"
@@ -8,47 +8,6 @@ import Character from '@engine/entities/character'
 import TileSet from "@engine/tile_set"
 import Map from "@engine/map"
 import * as ease from 'easy-ease'
-
-
-/*
-function easeInOutQuad(t, b, c, d) {
-  if ((t /= d / 2) < 1) return c / 2 * t * t + b;
-  return -c / 2 * ((--t) * (t - 2) - 1) + b;
-}
-
-function easeOutQuad(t, b, c, d) {
-  return -c * (t /= d) * (t - 2) + b;
-}
-
-function easeInQuad(t, b, c, d) {
-  return c * (t /= d) * t + b;
-}
-
-let time = 0
-let diff = 30
-let minTime = 0
-let maxTime = 150
-
-for (var i = 0, len = diff; i <= len; i++) {
-  (function(s) {
-    setTimeout(function() {
-      torch.position.y += 1
-    }, time);
-  })(i);
-
-  time = easeInQuad(i, minTime, maxTime, diff);
-  console.log(time);
-}
-*/
-
-/*
-class Tween {
-  static to(object, duration, from, to) {
-    let time = 0
-
-  }
-}
-*/
 
 let assets = [
   "sprites/dungeon_tiles.png",
@@ -99,10 +58,10 @@ class PatdGame extends Engine {
     return AssetManager.loadAsset(name)
   }
 
-  onUpdate(time) {
+  onUpdate(time: number) {
   }
 
-  onStateChange(fromState, toState) {
+  onStateChange(fromState: EngineState, toState: EngineState) {
     console.log(`State changed: ${fromState} -> ${toState}`)
   }
 
@@ -114,13 +73,13 @@ class PatdGame extends Engine {
     this.scene = scene
 
     let tileset = map.tileset
-    let sprite = tileset.getTileByName("torch").sprite
+    let sprite = tileset.getTileByName("torch")?.sprite
 
     let spookyboi = new Character()
     spookyboi.position.x = 250
     spookyboi.position.y = 50
     spookyboi.glowing = false
-    spookyboi.sprite = sprite
+    spookyboi.sprite = sprite!
     spookyboi.onUpdate = (elapsedTime) => {
       let player = this.world.player
       let heading = player.position.subtract(spookyboi.position)
@@ -134,7 +93,7 @@ class PatdGame extends Engine {
 
     for (var i = 0; i < 9; i++) {
       let torch = new Character()
-      torch.sprite = tileset.getTileByName('torch').sprite
+      torch.sprite = tileset.getTileByName('torch')?.sprite!
       torch.position.x = 32 + (i * 32)
       torch.position.y = -15
       torch.glowing = false
@@ -151,13 +110,13 @@ class PatdGame extends Engine {
     }
 
     let candle = new Character()
-    candle.sprite = tileset.getTileByName('candle').sprite
+    candle.sprite = tileset.getTileByName('candle')?.sprite!
     candle.position.x = 16 * 1
     candle.position.y = 16 * 8
     this.world.addEntity(candle)
 
     let candle2 = new Character()
-    candle2.sprite = tileset.getTileByName('candle').sprite
+    candle2.sprite = tileset.getTileByName('candle')?.sprite!
     candle2.position.x = 16 * 18
     candle2.position.y = 16 * 8
     this.world.addEntity(candle2)

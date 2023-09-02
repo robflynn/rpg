@@ -1,19 +1,17 @@
 {
   "compilerOptions": {
+    "noEmit": true,
     "sourceMap": true,
     "noImplicitAny": false,
-    "module": "commonjs",
-    "target": "esnext",
-    "lib": [
-      "es2015",
-      "es2017",
-      "dom"
-    ],
+    "module": "ESNext",
+    "target": "ES2020",
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "removeComments": true,
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
+    "isolatedModules": true,
     "allowSyntheticDefaultImports": false,
-    "jsx": "react",
-    "allowJs": true,
+    "noFallthroughCasesInSwitch": true,
     "baseUrl": "./",
     "paths": {
       "@data/*": [
@@ -24,10 +22,6 @@
       ]
     }
   },
-
-  "files": [
-    "./vue-shim.d.ts"
-  ],
 
   "include": [
     "**/*.ts",

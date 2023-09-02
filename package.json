@@ -3,43 +3,27 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "webpack-dev-server --mode development --hot",
-    "serve": "webpack-dev-server --mode development --hot",
-    "build": "webpack --mode production",
-    "postinstall": "if test \"$NODE_ENV\" = \"production\" ; then yarn build ; fi ",
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
     "start": "node server.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "copy-webpack-plugin": "^6.0.3",
-    "css-loader": "^3.6.0",
-    "html-webpack-plugin": "^4.3.0",
-    "mini-css-extract-plugin": "^0.9.0",
-    "sass": "^1.26.9",
-    "sass-loader": "^9.0.1",
-    "sass-resources-loader": "^2.0.3",
-    "style-loader": "^1.2.1",
-    "ts-loader": "^7.0.5",
-    "typescript": "^3.9.6",
-    "url-loader": "^4.1.0",
-    "vue-loader": "^15.9.3",
-    "vue-style-loader": "^4.1.2",
-    "vue-template-compiler": "^2.6.11",
-    "webpack": "^4.43.0",
-    "webpack-cli": "^3.3.12"
+    "@types/uuid": "^9.0.3",
+    "typescript": "^5.0",
+    "vite-plugin-static-copy": "^0.17.0"
   },
   "dependencies": {
     "easy-ease": "^1.0.9",
     "express": "^4.17.1",
     "resize-image-data": "^0.3.0",
     "throttle-debounce": "^2.2.1",
-    "uuid": "^8.2.0",
-    "vue": "^2.6.11",
-    "vue-splitpane": "^1.0.6",
-    "webpack-dev-server": "^3.11.0"
+    "uuid": "^9.0.0",
+    "vite": "^4.4.5"
   }
 }
